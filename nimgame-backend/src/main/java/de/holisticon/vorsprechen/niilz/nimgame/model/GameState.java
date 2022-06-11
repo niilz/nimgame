@@ -3,15 +3,18 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * Representation of the Game's state
+ */
 public class GameState {
 
-    private final int INITIAL_MATCH_COUNT = 13;
+    static final int INITIAL_MATCH_COUNT = 13;
+
+    @Getter
     private Integer matches;
 
-    GameState() {
+    public GameState() {
+        this.state = State.STOPPED;
         this.matches = INITIAL_MATCH_COUNT;
     }
 
