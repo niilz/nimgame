@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class Player {
 
-    private final String name;
+    private final GameState.PlayerType type;
     private int drawnMatches;
 
-    Player(String name) {
-        this.name = name;
+    Player(GameState.PlayerType type) {
+        this.type = type;
     }
 
     public void addMatches(int matches) {

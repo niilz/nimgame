@@ -6,17 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PlayerTest {
    private static final int ZERO_MATCHES = 0;
-   
+
     @Test
     void playerHasGivenNameOnInitialization() {
-        var expectedName = "dummy";
-        var player = new Player(expectedName);
-        assertEquals(expectedName, player.getName());
+        var expectedType = GameState.PlayerType.HUMAN;
+        var player = new Player(expectedType);
+        assertEquals(expectedType, player.getType());
     }
 
     @Test
     void playerHasNoDrawnMatchesOnInitialization() {
-        var player = new Player("new_user");
+        var player = new Player(GameState.PlayerType.HUMAN);
         assertEquals(ZERO_MATCHES, player.getDrawnMatches());
     }
 
