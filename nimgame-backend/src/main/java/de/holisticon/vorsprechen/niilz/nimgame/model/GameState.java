@@ -13,6 +13,9 @@ public class GameState {
     @Getter
     private Integer matches;
 
+    private Player player;
+    private Player computer;
+
     public GameState() {
         this.state = State.STOPPED;
         this.matches = INITIAL_MATCH_COUNT;
