@@ -5,7 +5,11 @@ import lombok.Setter;
 
 public class GameState {
 
+    public enum State {
+        RUNNING, STOPPED, WON,
+    }
+
     @Getter
     @Setter
-    private boolean isStarted;
+    private State state;
 }

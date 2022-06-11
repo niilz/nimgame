@@ -16,9 +16,9 @@ public class GameService {
     }
 
     public boolean isGameStarted() {
-        return this.gameState.isStarted();
+        return this.gameState.getState() == GameState.State.RUNNING;
     }
     public void startgame() {
-        this.gameState.setStarted(true);
+        this.gameState.setState(GameState.State.RUNNING);
     }
 }

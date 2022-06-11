@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
+import de.holisticon.vorsprechen.niilz.nimgame.model.GameState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
