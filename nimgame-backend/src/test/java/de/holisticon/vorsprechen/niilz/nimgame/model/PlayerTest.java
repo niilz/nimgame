@@ -9,14 +9,14 @@ class PlayerTest {
 
     @Test
     void playerHasGivenNameOnInitialization() {
-        var expectedType = GameState.PlayerType.HUMAN;
+        var expectedType = Player.PlayerType.HUMAN;
         var player = new Player(expectedType);
         assertEquals(expectedType, player.getType());
     }
 
     @Test
     void playerHasNoDrawnMatchesOnInitialization() {
-        var player = new Player(GameState.PlayerType.HUMAN);
+        var player = new Player(Player.PlayerType.HUMAN);
         assertEquals(ZERO_MATCHES, player.getDrawnMatches());
     }
 

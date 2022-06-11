@@ -19,18 +19,13 @@ public class GameState {
     public GameState() {
         this.state = State.STOPPED;
         this.matches = INITIAL_MATCH_COUNT;
-        this.player = new Player(PlayerType.HUMAN);
-        this.computer = new Player(PlayerType.COMPUTER);
+        this.player = new Player(Player.PlayerType.HUMAN);
+        this.computer = new Player(Player.PlayerType.COMPUTER);
     }
 
     public enum State {
         RUNNING, STOPPED, WON,
     }
-
-    public enum PlayerType {
-        HUMAN, COMPUTER
-    }
-
     @Getter
     @Setter
     private State state;
