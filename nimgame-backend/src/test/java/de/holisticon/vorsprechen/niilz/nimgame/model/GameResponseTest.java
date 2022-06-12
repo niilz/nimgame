@@ -2,22 +2,28 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameResponseTest {
 
     @Test
     void canCreateGameResponseWithError() {
-        var error = new GameResponseError("Some Error");
+        var expectedError = "Some Error";
+        var error = new GameResponseError(expectedError);
         assertTrue(error instanceof  GameResponse);
+        assertEquals(expectedError, error.error());
     }
 
     @Test
     void canCreateGameResponseWithStateMessage() {
         var gameState = new GameState();
         var message = GameStateMessage.from(gameState);
-        var error = new GameResponseSuccess(message);
-        assertTrue(error instanceof  GameResponse);
+        var expectedPlayerPosition = gameState.getCurrentPlayer().getPosition();
+        var successResponse = new GameResponseSuccess(message);
+        assertTrue(successResponse instanceof  GameResponse);
+        assertEquals(expectedPlayerPosition, successResponse.message().currentPlayerPosition());
+        assertEquals(GameState.INITIAL_MATCH_COUNT, successResponse.message().currentMatchCount());
     }
 
 }
