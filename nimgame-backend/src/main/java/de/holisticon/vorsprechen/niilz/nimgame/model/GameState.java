@@ -13,14 +13,14 @@ public class GameState {
     @Getter
     private Integer matches;
 
-    private Player player;
-    private Player computer;
+    private Player playerOne;
+    private Player playerTwo;
 
     public GameState() {
         this.state = State.STOPPED;
         this.matches = INITIAL_MATCH_COUNT;
-        this.player = new Player(Player.PlayerType.HUMAN);
-        this.computer = new Player(Player.PlayerType.COMPUTER);
+        this.playerOne = new Player(Player.PlayerType.HUMAN);
+        this.playerTwo = new Player(Player.PlayerType.COMPUTER);
     }
 
     public enum State {
