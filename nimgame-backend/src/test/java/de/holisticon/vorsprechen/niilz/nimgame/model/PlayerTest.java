@@ -8,16 +8,27 @@ class PlayerTest {
    private static final int ZERO_MATCHES = 0;
 
     @Test
-    void playerHasGivenNameOnInitialization() {
-        var expectedType = Player.PlayerType.HUMAN;
-        var player = new Player(expectedType);
-        assertEquals(expectedType, player.getType());
+    void playersHaveGivenCorrectTypeOnInitalization() {
+        var expectedTypePlayerOne = Player.PlayerType.HUMAN;
+        var expectedTypePlayerTwo = Player.PlayerType.COMPUTER;
+        var players = Player.createPlayers();
+        var playerOne = players[0];
+        assertEquals(expectedTypePlayerOne, playerOne.getType());
+        var playerTwo = players[1];
+        assertEquals(expectedTypePlayerTwo, playerTwo.getType());
+        var expectedTypeHuman = Player.PlayerType.HUMAN;
+        var twoHumanPlayers = Player.createPlayers(false);
+        var playerOneHuman = twoHumanPlayers[0];
+        assertEquals(expectedTypeHuman, playerOneHuman.getType());
+        var playerTwoHuman = twoHumanPlayers[1];
+        assertEquals(expectedTypeHuman, playerTwoHuman.getType());
     }
 
     @Test
-    void playerHasNoDrawnMatchesOnInitialization() {
-        var player = new Player(Player.PlayerType.HUMAN);
-        assertEquals(ZERO_MATCHES, player.getDrawnMatches());
+    void playersHaveNoDrawnMatchesOnInitialization() {
+        var players = Player.createPlayers();
+        assertEquals(ZERO_MATCHES, players[0].getDrawnMatches());
+        assertEquals(ZERO_MATCHES, players[1].getDrawnMatches());
     }
 
 }
