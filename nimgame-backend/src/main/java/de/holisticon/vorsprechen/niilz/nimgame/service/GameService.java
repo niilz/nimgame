@@ -29,7 +29,7 @@ public class GameService {
         gameState = new GameState(computerOpponent);
     }
     public boolean isGameStarted() {
-        return gameState.getState() == GameState.State.RUNNING;
+        return gameState != null && gameState.getState() == GameState.State.RUNNING;
     }
     public void startGame(boolean computerOpponent) {
         init(computerOpponent);
