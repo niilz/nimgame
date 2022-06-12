@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.api;
 
+import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
@@ -33,23 +34,25 @@ public class NimGameController {
     }
 
     @PostMapping("/draw")
-    public ResponseEntity<GameStateMessage> drawMatches(@RequestBody MoveMessage move) {
+    public ResponseEntity<GameResponse> drawMatches(@RequestBody MoveMessage move) {
         if (!gameService.isGameStarted()) {
-            log.error("Game has not yet been started");
-            return ResponseEntity.badRequest().build();
+            var error = new GameResponse.GameResponseError("Game must be started before matches can be drawn");
+            return ResponseEntity.badRequest().body(error);
         }
         gameService.makeMove(move);
-        return ResponseEntity.ok(gameService.getGameStateMessage());
+        var message = new GameResponse.GameResponseSuccess(gameService.getGameStateMessage());
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/start")
-    public ResponseEntity<GameStateMessage> initGame() {
+    public ResponseEntity<GameResponse> initGame() {
         if (gameService.isGameStarted()) {
-            log.error("Game has already been started");
-            return ResponseEntity.badRequest().build();
+            var error = new GameResponse.GameResponseError("Game has already been started");
+            return ResponseEntity.badRequest().body(error);
         }
         log.info("Starting initial Game state");
         gameService.startGame();
-        return ResponseEntity.ok(gameService.getGameStateMessage());
+        var message = new GameResponse.GameResponseSuccess(gameService.getGameStateMessage());
+        return ResponseEntity.ok(message);
     }
 }
