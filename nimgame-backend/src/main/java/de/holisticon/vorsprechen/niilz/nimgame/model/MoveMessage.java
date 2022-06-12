@@ -1,4 +1,4 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
-public record MoveMessage(int player, int matchCount) {
+public record MoveMessage(Player.Position position, int matchCount) {
 }

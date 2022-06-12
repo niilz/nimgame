@@ -37,7 +37,14 @@ public class Player {
     }
 
     public enum Position {
-        ONE, TWO,
+
+        ONE(1), TWO(2);
+
+        @Getter
+        private final int value;
+        Position(int value) {
+            this.value = value;
+        }
     }
 
     public enum PlayerType {
