@@ -27,8 +27,8 @@ class PlayerTest {
     @Test
     void playersHaveNoDrawnMatchesOnInitialization() {
         var players = Player.createPlayers();
-        assertEquals(ZERO_MATCHES, players[0].getDrawnMatches());
-        assertEquals(ZERO_MATCHES, players[1].getDrawnMatches());
+        assertEquals(ZERO_MATCHES, players[0].getDrawnMatchesTotal());
+        assertEquals(ZERO_MATCHES, players[1].getDrawnMatchesTotal());
     }
 
 }

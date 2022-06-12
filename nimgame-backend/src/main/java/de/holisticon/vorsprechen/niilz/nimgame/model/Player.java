@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
@@ -7,7 +8,10 @@ public class Player {
 
     private Position position;
     private PlayerType type;
-    private int drawnMatches;
+
+    private int currentDrawnMatches;
+    @JsonIgnore
+    private int drawnMatchesTotal;
 
     private Player() {}
 
@@ -33,7 +37,7 @@ public class Player {
         return player;
     }
     public void addMatches(int matches) {
-        this.drawnMatches += matches;
+        this.drawnMatchesTotal += matches;
     }
 
     public enum Position {

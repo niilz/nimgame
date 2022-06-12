@@ -40,7 +40,7 @@ public class GameService {
 
     public void makeMove(MoveMessage move) {
         log.info("Attempting move for Player '{}' who has drawn '{}' matches",
-                move.playerPosition(), move.drawnMatches());
-        this.gameState.deductMatches(move.drawnMatches(), move.playerPosition());
+                move.player().getPosition(), move.player().getCurrentDrawnMatches());
+        this.gameState.deductMatches(move.player().getCurrentDrawnMatches(), move.player().getPosition());
     }
 }

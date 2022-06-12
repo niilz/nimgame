@@ -18,6 +18,7 @@ class GameResponseTest {
     @Test
     void canCreateGameResponseWithStateMessage() {
         var gameState = new GameState();
+        gameState.startGame();
         var message = GameStateMessage.from(gameState);
         var expectedPlayerPosition = gameState.getCurrentPlayer().getPosition();
         var successResponse = new GameResponseSuccess(message);

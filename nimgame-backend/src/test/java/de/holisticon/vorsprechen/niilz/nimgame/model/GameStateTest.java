@@ -36,7 +36,7 @@ class GameStateTest {
         var notCurrentPlayerPosition = currentPlayerPosition == Player.Position.ONE
                 ? Player.Position.TWO
                 : Player.Position.ONE;
-        assertThrows(IllegalStateException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> gameState.deductMatches(1, notCurrentPlayerPosition));
     }
 
