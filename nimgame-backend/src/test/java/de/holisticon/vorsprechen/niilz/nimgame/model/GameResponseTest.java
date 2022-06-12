@@ -8,7 +8,7 @@ class GameResponseTest {
 
     @Test
     void canCreateGameResponseWithError() {
-        var error = new GameResponse.GameResponseError("Some Error");
+        var error = new GameResponseError("Some Error");
         assertTrue(error instanceof  GameResponse);
     }
 
@@ -16,7 +16,7 @@ class GameResponseTest {
     void canCreateGameResponseWithStateMessage() {
         var gameState = new GameState();
         var message = GameStateMessage.from(gameState);
-        var error = new GameResponse.GameResponseSuccess(message);
+        var error = new GameResponseSuccess(message);
         assertTrue(error instanceof  GameResponse);
     }
 

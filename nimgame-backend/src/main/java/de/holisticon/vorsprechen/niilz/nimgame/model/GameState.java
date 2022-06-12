@@ -47,7 +47,7 @@ public class GameState {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
         }
         if (playerPosition != currentPlayer.getPosition()) {
-            throw new IllegalStateException("Only the current Player is allowed to draw matches");
+            throw new IllegalArgumentException("Only the current Player is allowed to draw matches");
         }
         matches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
