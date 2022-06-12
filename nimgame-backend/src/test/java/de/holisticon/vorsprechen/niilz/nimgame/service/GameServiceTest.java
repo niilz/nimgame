@@ -20,7 +20,7 @@ class GameServiceTest {
     @Test
     void gameIsStartedAfterStartingTheGame() {
         assertFalse(gameService.isGameStarted());
-        gameService.startgame();
+        gameService.startGame();
         assertTrue(gameService.isGameStarted());
     }
 }

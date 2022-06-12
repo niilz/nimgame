@@ -3,6 +3,7 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class GameStateTest {
 
@@ -13,6 +14,7 @@ class GameStateTest {
         assertEquals(expectedGameState, initalGameState.getState());
         var expectedMatchCount = GameState.INITIAL_MATCH_COUNT;
         assertEquals(expectedMatchCount, initalGameState.getMatches());
+        assertNull(initalGameState.getCurrentPlayer());
     }
 
 }
