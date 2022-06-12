@@ -18,7 +18,7 @@ public class GameState {
     @Getter
     private State state;
     @Getter
-    private Integer matches;
+    private Integer remainingMatches;
 
     @Getter
     private Player currentPlayer;
@@ -27,10 +27,10 @@ public class GameState {
 
     private Player[] players;
 
-    public GameState() {
+    public GameState(boolean computerOpponent) {
         this.state = State.STOPPED;
-        this.matches = INITIAL_MATCH_COUNT;
-        this.players = Player.createPlayers();
+        this.remainingMatches = INITIAL_MATCH_COUNT;
+        this.players = Player.createPlayers(computerOpponent);
         log.info("GameState has been created");
     }
 
@@ -53,14 +53,14 @@ public class GameState {
         this.currentPlayer = this.nextPlayer;
         this.nextPlayer = tempPlayer;
     }
-    public void deductMatches(int drawnMatches, Player.Position playerPosition) {
+    public void makeMove(int drawnMatches, Player.Position playerPosition) {
         if (drawnMatches < 1 || drawnMatches > 3) {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
         }
         if (playerPosition != currentPlayer.getPosition()) {
             throw new IllegalArgumentException("Only the current Player is allowed to draw matches");
         }
-        matches -= drawnMatches;
+        remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
         swapPlayers();
     }

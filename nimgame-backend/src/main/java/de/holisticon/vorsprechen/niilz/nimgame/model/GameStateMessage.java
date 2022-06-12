@@ -6,7 +6,7 @@ public record GameStateMessage(int currentMatchCount, GameState.State gameState,
     public static GameStateMessage from(GameState gameState) {
         var maybePlayer = gameState.getCurrentPlayer();
         var playerPosition = maybePlayer == null ? null : maybePlayer.getPosition();
-        return new GameStateMessage(gameState.getMatches(),
+        return new GameStateMessage(gameState.getRemainingMatches(),
                 gameState.getState(), playerPosition);
     }
 }

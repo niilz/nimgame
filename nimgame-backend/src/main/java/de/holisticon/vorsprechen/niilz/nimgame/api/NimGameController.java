@@ -4,6 +4,7 @@ import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
+import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -42,7 +44,15 @@ public class NimGameController {
             return ResponseEntity.badRequest().body(error);
         }
         try {
-            gameService.makeMove(move);
+            if (move.player().getType() == Player.PlayerType.COMPUTER) {
+                gameService.makeComputerMove();
+            } else {
+                gameService.makeMove(move);
+                // Autoplay means trigger the computer-move immediately
+                if (move.autoPlay()) {
+                    gameService.makeComputerMove();
+                }
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new GameResponseError(e.getMessage()));
         }
@@ -51,13 +61,13 @@ public class NimGameController {
     }
 
     @GetMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameResponse> initGame() {
+    public ResponseEntity<GameResponse> initGame(@RequestParam(required = false) boolean computerOpponent) {
         if (gameService.isGameStarted()) {
             var error = new GameResponseError("Game has already been started");
             return ResponseEntity.badRequest().body(error);
         }
         log.info("Starting initial Game state");
-        gameService.startGame();
+        gameService.startGame(computerOpponent);
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
     }

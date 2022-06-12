@@ -8,7 +8,7 @@ class GameStateMessageTest {
 
     @Test
     void unstartedGameHasNoPlayerPosition() {
-        var gameState = new GameState();
+        var gameState = new GameState(true);
         var expectedState = GameState.State.STOPPED;
         var gameStateMessage = GameStateMessage.from(gameState);
         var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
@@ -19,7 +19,7 @@ class GameStateMessageTest {
 
     @Test
     void canCreateGameStateMessageFromGameState() {
-        var gameState = new GameState();
+        var gameState = new GameState(true);
         gameState.startGame();
         var expectedState = GameState.State.RUNNING;
         var expectedCurrentPlayer = gameState.getCurrentPlayer();

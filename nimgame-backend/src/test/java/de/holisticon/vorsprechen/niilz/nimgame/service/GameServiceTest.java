@@ -14,7 +14,7 @@ class GameServiceTest {
 
     @BeforeEach
     void reset() {
-        gameService.resetGame();
+        gameService.resetGame(true);
     }
 
     @Autowired
@@ -25,15 +25,15 @@ class GameServiceTest {
     @Test
     void gameIsStartedAfterStartingTheGame() {
         assertFalse(gameService.isGameStarted());
-        gameService.startGame();
+        gameService.startGame(true);
         assertTrue(gameService.isGameStarted());
     }
 
     @Test
     void resettingTheGameReturnsToInitalState() {
-        gameService.startGame();
+        gameService.startGame(true);
         assertTrue(gameService.isGameStarted());
-        gameService.resetGame();
+        gameService.resetGame(true);
         assertFalse(gameService.isGameStarted());
     }
 }
