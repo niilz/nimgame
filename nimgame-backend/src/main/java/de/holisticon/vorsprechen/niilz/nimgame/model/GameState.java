@@ -1,12 +1,14 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
 
 /**
  * Representation of the Game's state
  */
+@Slf4j
 public class GameState {
 
     private static final int PLAYER_COUNT = 2;
@@ -27,6 +29,17 @@ public class GameState {
         this.state = State.STOPPED;
         this.matches = INITIAL_MATCH_COUNT;
         this.players = Player.createPlayers();
+        log.info("GameState has been created");
+    }
+
+    public void startGame() {
+        if (this.state == State.RUNNING) {
+            throw new IllegalArgumentException("Running Game cannot be started");
+        }
+        this.state = State.RUNNING;
+        var playerPosition = new Random().nextInt(PLAYER_COUNT);
+        this.currentPlayer = players[playerPosition];
+        log.info("Game has been started. CurrentPlayer is: {}", this.currentPlayer.getPosition());
     }
 
     public void deductMatches(int drawnMatches, Player.Position playerPosition) {
@@ -46,14 +59,5 @@ public class GameState {
 
     public enum State {
         RUNNING, STOPPED, WON,
-    }
-
-    public void startGame() {
-        if (this.state == State.RUNNING) {
-            throw new IllegalArgumentException("Running Game cannot be started");
-        }
-        this.state = State.RUNNING;
-        var playerPosition = new Random().nextInt(PLAYER_COUNT);
-        this.currentPlayer = players[playerPosition];
     }
 }
