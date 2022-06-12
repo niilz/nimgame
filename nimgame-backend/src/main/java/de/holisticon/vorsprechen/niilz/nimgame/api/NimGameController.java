@@ -71,4 +71,10 @@ public class NimGameController {
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
     }
+
+    @GetMapping(value = "/reset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> resetGame(@RequestParam(required = false) boolean computerOpponent) {
+        gameService.resetGame(computerOpponent);
+        return ResponseEntity.ok("Reset Game");
+    }
 }
