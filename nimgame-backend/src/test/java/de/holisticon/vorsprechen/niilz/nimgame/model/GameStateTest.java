@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameStateTest {
 
@@ -15,6 +16,28 @@ class GameStateTest {
         var expectedMatchCount = GameState.INITIAL_MATCH_COUNT;
         assertEquals(expectedMatchCount, initalGameState.getMatches());
         assertNull(initalGameState.getCurrentPlayer());
+    }
+
+    @Test
+    void decutMatchesFailsWhenMatchCountNotBetween1and3() {
+        var gameState = new GameState();
+        gameState.startGame();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameState.deductMatches(0, Player.Position.ONE));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameState.deductMatches(4, Player.Position.ONE));
+    }
+
+    @Test
+    void decutMatchesFailsWhenPlayerIsNotTheCurrentPlayer() {
+        var gameState = new GameState();
+        gameState.startGame();
+        var currentPlayerPosition = gameState.getCurrentPlayer().getPosition();
+        var notCurrentPlayerPosition = currentPlayerPosition == Player.Position.ONE
+                ? Player.Position.TWO
+                : Player.Position.ONE;
+        assertThrows(IllegalStateException.class,
+                () -> gameState.deductMatches(1, notCurrentPlayerPosition));
     }
 
 }

@@ -34,6 +34,10 @@ public class NimGameController {
 
     @PostMapping("/draw")
     public ResponseEntity<GameStateMessage> drawMatches(@RequestBody MoveMessage move) {
+        if (!gameService.isGameStarted()) {
+            log.error("Game has not yet been started");
+            return ResponseEntity.badRequest().build();
+        }
         gameService.makeMove(move);
         return ResponseEntity.ok(gameService.getGameStateMessage());
     }
