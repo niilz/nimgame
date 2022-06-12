@@ -33,9 +33,9 @@ public class NimGameController {
     }
 
     @PostMapping("/draw")
-    public ResponseEntity<String> drawMatches(@RequestBody MoveMessage move) {
-        log.info("MoveMessage: {}", move);
-        return ResponseEntity.ok("Move happened");
+    public ResponseEntity<GameStateMessage> drawMatches(@RequestBody MoveMessage move) {
+        gameService.makeMove(move);
+        return ResponseEntity.ok(gameService.getGameStateMessage());
     }
 
     @GetMapping("/start")

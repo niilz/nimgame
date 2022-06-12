@@ -29,6 +29,21 @@ public class GameState {
         this.players = Player.createPlayers();
     }
 
+    public void deductMatches(int drawnMatches, Player.Position playerPosition) {
+        if (drawnMatches < 1 || drawnMatches > 3) {
+            throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
+        }
+        if (playerPosition != currentPlayer.getPosition()) {
+            throw new IllegalStateException("Only the current Player is allowed to draw matches");
+        }
+        matches -= drawnMatches;
+        currentPlayer.addMatches(drawnMatches);
+        var newPlayerPosition = playerPosition == Player.Position.ONE
+                ? Player.Position.TWO
+                : Player.Position.ONE;
+        currentPlayer = players[newPlayerPosition.getValue() - 1];
+    }
+
     public enum State {
         RUNNING, STOPPED, WON,
     }

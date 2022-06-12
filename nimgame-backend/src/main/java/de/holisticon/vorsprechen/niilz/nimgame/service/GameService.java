@@ -2,6 +2,7 @@ package de.holisticon.vorsprechen.niilz.nimgame.service;
 
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameState;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameStateMessage;
+import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,9 @@ public class GameService {
 
     public void resetGame() {
         this.gameState = new GameState();
+    }
+
+    public void makeMove(MoveMessage move) {
+        this.gameState.deductMatches(move.drawnMatches(), move.playerPosition());
     }
 }
