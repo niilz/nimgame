@@ -42,5 +42,7 @@ public class GameService {
         log.info("Attempting move for Player '{}' who has drawn '{}' matches",
                 move.player().getPosition(), move.player().getCurrentDrawnMatches());
         this.gameState.deductMatches(move.player().getCurrentDrawnMatches(), move.player().getPosition());
+        // TODO: if human and autopla make auto move
+        //if (move.player().getType())
     }
 }

@@ -22,6 +22,8 @@ public class GameState {
 
     @Getter
     private Player currentPlayer;
+    @Getter
+    private Player nextPlayer;
 
     private Player[] players;
 
@@ -37,11 +39,20 @@ public class GameState {
             throw new IllegalArgumentException("Running Game cannot be started");
         }
         this.state = State.RUNNING;
-        var playerPosition = new Random().nextInt(PLAYER_COUNT);
-        this.currentPlayer = players[playerPosition];
+        this.currentPlayer = players[0];
+        this.nextPlayer = players[1];
+        // Randomize which player starts the game
+        if (new Random().nextBoolean()) {
+            swapPlayers();
+        }
         log.info("Game has been started. CurrentPlayer is: {}", this.currentPlayer.getPosition());
     }
 
+    void swapPlayers() {
+        var tempPlayer = this.currentPlayer;
+        this.currentPlayer = this.nextPlayer;
+        this.nextPlayer = tempPlayer;
+    }
     public void deductMatches(int drawnMatches, Player.Position playerPosition) {
         if (drawnMatches < 1 || drawnMatches > 3) {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
@@ -51,10 +62,7 @@ public class GameState {
         }
         matches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
-        var newPlayerPosition = playerPosition == Player.Position.ONE
-                ? Player.Position.TWO
-                : Player.Position.ONE;
-        currentPlayer = players[newPlayerPosition.getValue() - 1];
+        swapPlayers();
     }
 
     public enum State {

@@ -40,4 +40,15 @@ class GameStateTest {
                 () -> gameState.deductMatches(1, notCurrentPlayerPosition));
     }
 
+    @Test
+    void swappingPlayersWorks() {
+        var gameState = new GameState();
+        var currentPlayer = gameState.getCurrentPlayer();
+        var nextPlayer = gameState.getNextPlayer();
+        gameState.swapPlayers();
+        assertEquals(currentPlayer, gameState.getNextPlayer());
+        assertEquals(nextPlayer, gameState.getCurrentPlayer());
+
+    }
+
 }
