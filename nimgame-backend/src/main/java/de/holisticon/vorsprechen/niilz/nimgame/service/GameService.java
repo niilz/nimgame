@@ -27,4 +27,8 @@ public class GameService {
             log.error("Game could not be started because of illegal state", e);
         }
     }
+
+    public void resetGame() {
+        this.gameState = new GameState();
+    }
 }

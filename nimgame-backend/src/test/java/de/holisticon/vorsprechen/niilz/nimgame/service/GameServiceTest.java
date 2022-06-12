@@ -23,4 +23,12 @@ class GameServiceTest {
         gameService.startGame();
         assertTrue(gameService.isGameStarted());
     }
+
+    @Test
+    void resettingTheGameReturnsToInitalState() {
+        gameService.startGame();
+        assertTrue(gameService.isGameStarted());
+        gameService.resetGame();
+        assertFalse(gameService.isGameStarted());
+    }
 }
