@@ -53,7 +53,7 @@ public class NimGameController {
             } else {
                 gameService.makeComputerMove(move.getPlayerRank());
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(new GameResponseError(e.getMessage()));
         }
         var message = new GameResponseSuccess(gameService.getGameStateMessage());

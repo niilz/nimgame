@@ -49,4 +49,48 @@ class GameStateTest {
             assertEquals(Player.PlayerType.HUMAN, gameState.getNextPlayer().getType());
         }
     }
+
+    @Test
+    void ifNoComputerIsActivatedBothPlayersAreHuman() {
+        var gameState = new GameState(false);
+        gameState.startGame();
+        assertEquals(Player.PlayerType.HUMAN, gameState.getCurrentPlayer().getType());
+        assertEquals(Player.PlayerType.HUMAN, gameState.getNextPlayer().getType());
+    }
+
+    @Test
+    void whenLastMatchIsTakenGameIsWon() {
+        var gameState = new GameState(false);
+        gameState.startGame();
+        // Make sure Player TWO is the currentPlayer in the beginning
+        if (gameState.getCurrentPlayer().getRank() == Player.PlayerRank.ONE) {
+            gameState.swapPlayers();
+        }
+        var playerRanks = Player.PlayerRank.values();
+        // Draw matches until only one is left
+        for (int matchCount = 1; matchCount < 13; matchCount++) {
+            gameState.makeMove(1, playerRanks[matchCount % 2]);
+        }
+        assertEquals(1, gameState.getRemainingMatches());
+        assertEquals(GameState.State.RUNNING, gameState.getState());
+        // Finish the game
+        gameState.makeMove(1, Player.PlayerRank.TWO);
+        assertEquals(GameState.State.WON, gameState.getState());
+    }
+
+    @Test
+    void thereCanNeverBeLessThanZeroRemainingMatches() {
+        var gameState = new GameState(false);
+        gameState.startGame();
+        // Make sure Player TWO is the currentPlayer in the beginning
+        if (gameState.getCurrentPlayer().getRank() == Player.PlayerRank.ONE) {
+            gameState.swapPlayers();
+        }
+        var playerRanks = Player.PlayerRank.values();
+        for (int matchCount = 1; matchCount < 14; matchCount++) {
+            gameState.makeMove(1, playerRanks[matchCount % 2]);
+        }
+        assertEquals(0, gameState.getRemainingMatches());
+        assertThrows(IllegalStateException.class, () -> gameState.makeMove(1, Player.PlayerRank.TWO));
+    }
 }

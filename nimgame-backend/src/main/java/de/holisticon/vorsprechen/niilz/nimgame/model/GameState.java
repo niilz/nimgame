@@ -11,8 +11,6 @@ import java.util.Random;
 @Slf4j
 public class GameState {
 
-    private static final int PLAYER_COUNT = 2;
-
     static final int INITIAL_MATCH_COUNT = 13;
 
     @Getter
@@ -55,15 +53,25 @@ public class GameState {
         this.nextPlayer = tempPlayer;
     }
     public void makeMove(int drawnMatches, Player.PlayerRank rank) {
+        if (state == State.WON) {
+            throw new IllegalStateException("Game is already won");
+        }
         if (rank != currentPlayer.getRank()) {
             throw new IllegalArgumentException("Same Player must not play again");
         }
         if (drawnMatches < 1 || drawnMatches > 3) {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
         }
+        if (drawnMatches > remainingMatches) {
+            throw new IllegalArgumentException("Player must not draw matches than there remain");
+        }
         remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
         swapPlayers();
+        if (remainingMatches == 0) {
+            state = State.WON;
+            log.info("Game has been finished");
+        }
     }
 
     public enum State {
