@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MoveMessageTest {
 
@@ -16,14 +17,17 @@ class MoveMessageTest {
     @SneakyThrows
     void deserializationIntoMoveMessageHumanWorks() {
         var moveMessageHumanJson = "{" +
+                    "\"playerType\": \"HUMAN\"," +
                     "\"playerRank\": \"ONE\"," +
                     "\"drawnMatches\": 2," +
                     "\"autoPlay\": true" +
                 "}";
+        var expectedPlayerType = Player.PlayerType.HUMAN;
         var expectedPlayerRank = Player.PlayerRank.ONE;
         var expectedDrawnMatches = 2;
         var expectedAutoPlay = true;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageHuman.class);
+        assertEquals(expectedPlayerType, deserializedMoveMessage.getPlayerType());
         assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayerRank());
         assertEquals(expectedDrawnMatches, deserializedMoveMessage.getDrawnMatches());
         assertEquals(expectedAutoPlay, deserializedMoveMessage.isAutoPlay());
@@ -33,6 +37,7 @@ class MoveMessageTest {
     @SneakyThrows
     void deserializationIntoMoveMessageComputerWorks() {
         var moveMessageHumanJson = "{" +
+                "\"playerType\": \"COMPUTER\"," +
                 "\"playerRank\": \"TWO\"" +
                 "}";
         var expectedPlayerRank = Player.PlayerRank.TWO;
@@ -41,9 +46,34 @@ class MoveMessageTest {
     }
 
     @Test
-    void invalidPlayerPositionCanNotBeDeserialized() {
-        var moveMessageJson = "{\"player\": \"NONE\", \"drawnMatches\": 2}";
+    void invalidPlayerTypeCanNotBeDeserialized() {
+        var moveMessageJson = "{\"playerType\": \"NONE\", \"drawnMatches\": 2}";
         assertThrows(JsonMappingException.class, () -> mapper.readValue(moveMessageJson, MoveMessageHuman.class));
+    }
+
+    @Test
+    @SneakyThrows
+    void deserializationIntoMoveMessageSuperType() {
+        var moveMessageHumanJson = "{" +
+                "\"playerType\": \"HUMAN\"," +
+                "\"playerRank\": \"ONE\"," +
+                "\"drawnMatches\": 2," +
+                "\"autoPlay\": true" +
+                "}";
+        var expectedPlayerRank = Player.PlayerRank.ONE;
+        var deserializedMoveMessageHuman = mapper.readValue(moveMessageHumanJson, MoveMessage.class);
+        assertEquals(Player.PlayerType.HUMAN, deserializedMoveMessageHuman.getPlayerType());
+        assertEquals(expectedPlayerRank, deserializedMoveMessageHuman.getPlayerRank());
+        assertTrue(deserializedMoveMessageHuman instanceof MoveMessageHuman);
+
+        var moveMessageComputerJson = "{" +
+                "\"playerType\": \"COMPUTER\"," +
+                "\"playerRank\": \"ONE\"" +
+                "}";
+        var deserializedMoveMessageComputer = mapper.readValue(moveMessageComputerJson, MoveMessage.class);
+        assertEquals(Player.PlayerType.COMPUTER, deserializedMoveMessageComputer.getPlayerType());
+        assertEquals(expectedPlayerRank, deserializedMoveMessageComputer.getPlayerRank());
+        assertTrue(deserializedMoveMessageComputer instanceof MoveMessageComputer);
     }
 
 }

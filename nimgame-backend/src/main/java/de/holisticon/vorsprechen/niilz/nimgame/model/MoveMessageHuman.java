@@ -6,6 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class MoveMessageHuman extends MoveMessage {
+
+    private final Player.PlayerType playerType = Player.PlayerType.HUMAN;
     private final int drawnMatches;
     private final boolean autoPlay;
 
