@@ -1,11 +1,15 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
-public record GameStateMessage(Player.PlayerRank player, int currentMatchCount, GameState.State gameState) {
+import java.util.Optional;
+
+public record GameStateMessage(Player.PlayerRank player, Player.PlayerType type, int currentMatchCount,
+                               GameState.State gameState) {
 
     public static GameStateMessage from(GameState gameState) {
-        var rank = gameState.getCurrentPlayer() == null
-                ? null
-                : gameState.getCurrentPlayer().getRank();
-        return new GameStateMessage(rank, gameState.getRemainingMatches(), gameState.getState());
+        var rankAndType = Optional.ofNullable(gameState.getCurrentPlayer())
+                .map(player -> new Enum[]{player.getRank(), player.getType()})
+                .orElse(new Enum[] {null, null});
+                return new GameStateMessage((Player.PlayerRank) rankAndType[0], (Player.PlayerType) rankAndType[1],
+                        gameState.getRemainingMatches(), gameState.getState());
     }
 }
