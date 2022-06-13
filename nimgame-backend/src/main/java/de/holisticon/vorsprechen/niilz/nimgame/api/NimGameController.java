@@ -3,6 +3,7 @@ package de.holisticon.vorsprechen.niilz.nimgame.api;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
+import de.holisticon.vorsprechen.niilz.nimgame.model.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
@@ -29,12 +30,10 @@ public class NimGameController {
     NimGameController(GameService gameService) {
         this.gameService = gameService;
     }
-    /**
-     * @return Dummy-Text to show that the controller is working
-     */
-    @GetMapping("/")
-    public ResponseEntity<String> helloWorld() {
-        return ResponseEntity.ok("Hello World!");
+
+    @GetMapping("/state")
+    public ResponseEntity<GameStateMessage> getState() {
+        return ResponseEntity.ok(gameService.getGameStateMessage());
     }
 
     @PostMapping(value = "/draw", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +46,8 @@ public class NimGameController {
             if (move instanceof MoveMessageHuman humanMove) {
                 gameService.makeMove(humanMove);
                 // Autoplay means trigger the computer-move immediately
-                if (humanMove.isAutoPlay()) {
+                // (autoplay is ignored if next-player is not a computer
+                if (gameService.isNextPlayerComputer() && humanMove.isAutoPlay()) {
                     gameService.makeComputerMove(move.getPlayerRank());
                 }
             } else {

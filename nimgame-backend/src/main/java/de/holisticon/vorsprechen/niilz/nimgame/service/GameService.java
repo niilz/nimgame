@@ -90,4 +90,8 @@ public class GameService {
     public int getRemainingMatches() {
         return gameState.getRemainingMatches();
     }
+
+    public boolean isNextPlayerComputer() {
+        return gameState.getNextPlayer().getType() == Player.PlayerType.COMPUTER;
+    }
 }
