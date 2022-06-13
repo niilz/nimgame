@@ -11,14 +11,14 @@ import java.util.Random;
 @Slf4j
 public class GameState {
 
-    static final int INITIAL_MATCH_COUNT = 13;
+    public static final int INITIAL_MATCH_COUNT = 13;
 
     @Getter
     private State state;
     @Getter
     private Integer remainingMatches;
 
-    private boolean playAgainstComputer;
+    private final boolean playAgainstComputer;
 
     @Getter
     private Player currentPlayer;

@@ -72,9 +72,9 @@ public class NimGameController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping(value = "/reset", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> resetGame(@RequestParam(required = false) boolean computerOpponent) {
-        gameService.resetGame(computerOpponent);
+    @GetMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> restart(@RequestParam(required = false) boolean computerOpponent) {
+        gameService.restartGame(computerOpponent);
         return ResponseEntity.ok("Reset Game");
     }
 }

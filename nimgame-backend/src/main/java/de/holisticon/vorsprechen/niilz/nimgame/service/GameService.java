@@ -42,15 +42,22 @@ public class GameService {
         }
     }
 
+    public void resetGame() {
+        gameState = null;
+    }
+
+    public void restartGame(boolean computerOpponent) {
+        startGame(computerOpponent);
+    }
+
     public GameStateMessage getGameStateMessage() {
         return GameStateMessage.from(gameState);
     }
 
-    public void resetGame(boolean computerOpponent) {
-        gameState = new GameState(computerOpponent);
-    }
-
     public void makeMove(MoveMessage move) {
+        if (gameState.getCurrentPlayer().getType() != move.getPlayerType()) {
+            throw new IllegalArgumentException("Player is of wrong type");
+        }
         if (move instanceof MoveMessageHuman messageHuman) {
             log.info("Attempting move for Human-Player, who has drawn '{}' matches",
                     messageHuman.getDrawnMatches());
@@ -76,8 +83,11 @@ public class GameService {
         return matchCount;
     }
 
-    public boolean isCurrentPlayerComputer() {
-        return gameState.getNextPlayer().getType() == Player.PlayerType.COMPUTER;
+    public Player.PlayerRank getCurrentPlayersRank() {
+        return gameState.getCurrentPlayer().getRank();
     }
 
+    public int getRemainingMatches() {
+        return gameState.getRemainingMatches();
+    }
 }
