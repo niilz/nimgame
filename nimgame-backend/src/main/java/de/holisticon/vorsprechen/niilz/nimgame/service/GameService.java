@@ -3,6 +3,8 @@ package de.holisticon.vorsprechen.niilz.nimgame.service;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameState;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
+import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageComputer;
+import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;
 import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,9 +51,22 @@ public class GameService {
     }
 
     public void makeMove(MoveMessage move) {
-        log.info("Attempting move for Player '{}' who has drawn '{}' matches",
-                move.player().getPosition(), move.player().getCurrentDrawnMatches());
-        gameState.makeMove(move.player().getCurrentDrawnMatches(), move.player().getPosition());
+        if (move instanceof MoveMessageHuman messageHuman) {
+            log.info("Attempting move for Human-Player, who has drawn '{}' matches",
+                    messageHuman.drawnMatches());
+            gameState.makeMove(messageHuman.drawnMatches());
+        } else if (move instanceof MoveMessageComputer) {
+            var matchesToDraw = decideMatchCountForComputer();
+            var computer = gameState.getCurrentPlayer();
+            assert(computer.getType() == Player.PlayerType.COMPUTER);
+            gameState.makeMove(matchesToDraw);
+        } else {
+            throw new IllegalArgumentException("Move must be of type Human or Computer");
+        }
+    }
+
+    public void makeComputerMove() {
+        makeMove(new MoveMessageComputer());
     }
 
     public int decideMatchCountForComputer() {
@@ -65,10 +80,4 @@ public class GameService {
         return gameState.getNextPlayer().getType() == Player.PlayerType.COMPUTER;
     }
 
-    public void makeComputerMove() {
-        var matchesToDraw = decideMatchCountForComputer();
-        var computer = gameState.getCurrentPlayer();
-        assert(computer.getType() == Player.PlayerType.COMPUTER);
-        gameState.makeMove(matchesToDraw, computer.getPosition());
-    }
 }

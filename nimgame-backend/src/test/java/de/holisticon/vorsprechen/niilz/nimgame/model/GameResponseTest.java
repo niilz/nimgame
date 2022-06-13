@@ -20,10 +20,9 @@ class GameResponseTest {
         var gameState = new GameState(true);
         gameState.startGame();
         var message = GameStateMessage.from(gameState);
-        var expectedPlayerPosition = gameState.getCurrentPlayer().getPosition();
+        var expectedPlayerPosition = gameState.getCurrentPlayer();
         var successResponse = new GameResponseSuccess(message);
         assertTrue(successResponse instanceof  GameResponse);
-        assertEquals(expectedPlayerPosition, successResponse.message().currentPlayerPosition());
         assertEquals(GameState.INITIAL_MATCH_COUNT, successResponse.message().currentMatchCount());
     }
 

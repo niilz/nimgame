@@ -20,17 +20,17 @@ public class GameState {
     @Getter
     private Integer remainingMatches;
 
+    private boolean playAgainstComputer;
+
     @Getter
     private Player currentPlayer;
     @Getter
     private Player nextPlayer;
 
-    private Player[] players;
-
     public GameState(boolean computerOpponent) {
         this.state = State.STOPPED;
         this.remainingMatches = INITIAL_MATCH_COUNT;
-        this.players = Player.createPlayers(computerOpponent);
+        this.playAgainstComputer = computerOpponent;
         log.info("GameState has been created");
     }
 
@@ -39,13 +39,14 @@ public class GameState {
             throw new IllegalArgumentException("Running Game cannot be started");
         }
         this.state = State.RUNNING;
+        var players = Player.createPlayers(playAgainstComputer);
         this.currentPlayer = players[0];
         this.nextPlayer = players[1];
         // Randomize which player starts the game
         if (new Random().nextBoolean()) {
             swapPlayers();
         }
-        log.info("Game has been started. CurrentPlayer is: {}", this.currentPlayer.getPosition());
+        log.info("Game has been started");
     }
 
     void swapPlayers() {
@@ -53,12 +54,9 @@ public class GameState {
         this.currentPlayer = this.nextPlayer;
         this.nextPlayer = tempPlayer;
     }
-    public void makeMove(int drawnMatches, Player.Position playerPosition) {
+    public void makeMove(int drawnMatches) {
         if (drawnMatches < 1 || drawnMatches > 3) {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
-        }
-        if (playerPosition != currentPlayer.getPosition()) {
-            throw new IllegalArgumentException("Only the current Player is allowed to draw matches");
         }
         remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);

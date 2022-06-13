@@ -13,7 +13,6 @@ class GameStateMessageTest {
         var gameStateMessage = GameStateMessage.from(gameState);
         var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
         assertEquals(expectedState, gameStateMessage.gameState());
-        assertNull(gameStateMessage.currentPlayerPosition());
         assertEquals(expectedCurrentMatches, gameStateMessage.currentMatchCount());
     }
 
@@ -22,11 +21,9 @@ class GameStateMessageTest {
         var gameState = new GameState(true);
         gameState.startGame();
         var expectedState = GameState.State.RUNNING;
-        var expectedCurrentPlayer = gameState.getCurrentPlayer();
         var gameStateMessage = GameStateMessage.from(gameState);
         var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
         assertEquals(expectedState, gameStateMessage.gameState());
-        assertEquals(expectedCurrentPlayer.getPosition(), gameStateMessage.currentPlayerPosition());
         assertEquals(expectedCurrentMatches, gameStateMessage.currentMatchCount());
     }
 

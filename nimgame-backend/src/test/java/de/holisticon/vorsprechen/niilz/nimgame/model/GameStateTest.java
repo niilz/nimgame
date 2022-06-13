@@ -23,21 +23,9 @@ class GameStateTest {
         var gameState = new GameState(true);
         gameState.startGame();
         assertThrows(IllegalArgumentException.class,
-                () -> gameState.makeMove(0, Player.Position.ONE));
+                () -> gameState.makeMove(0));
         assertThrows(IllegalArgumentException.class,
-                () -> gameState.makeMove(4, Player.Position.ONE));
-    }
-
-    @Test
-    void decutMatchesFailsWhenPlayerIsNotTheCurrentPlayer() {
-        var gameState = new GameState(true);
-        gameState.startGame();
-        var currentPlayerPosition = gameState.getCurrentPlayer().getPosition();
-        var notCurrentPlayerPosition = currentPlayerPosition == Player.Position.ONE
-                ? Player.Position.TWO
-                : Player.Position.ONE;
-        assertThrows(IllegalArgumentException.class,
-                () -> gameState.makeMove(1, notCurrentPlayerPosition));
+                () -> gameState.makeMove(4));
     }
 
     @Test
@@ -48,7 +36,6 @@ class GameStateTest {
         gameState.swapPlayers();
         assertEquals(currentPlayer, gameState.getNextPlayer());
         assertEquals(nextPlayer, gameState.getCurrentPlayer());
-
     }
-
+    
 }

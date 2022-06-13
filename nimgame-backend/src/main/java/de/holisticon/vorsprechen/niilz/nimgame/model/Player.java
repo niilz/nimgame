@@ -3,13 +3,13 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
+import javax.swing.text.Position;
+
 @Getter
 public class Player {
 
-    private Position position;
     private PlayerType type;
 
-    private int currentDrawnMatches;
     @JsonIgnore
     private int drawnMatchesTotal;
 
@@ -20,35 +20,23 @@ public class Player {
     }
 
     public static Player[] createPlayers(boolean isTwoComputer) {
-        var playerOne = createPlayer(Position.ONE);
+        var playerOne = createPlayer();
         var playerTwo = isTwoComputer
-                ? createPlayer(Position.TWO, PlayerType.COMPUTER)
-                : createPlayer(Position.TWO);
+                ? createPlayer(PlayerType.COMPUTER)
+                : createPlayer();
         return new Player[] {playerOne, playerTwo};
     }
 
-    private static Player createPlayer(Position position) {
-        return createPlayer(position, PlayerType.HUMAN);
+    private static Player createPlayer() {
+        return createPlayer(PlayerType.HUMAN);
     }
-    private static Player createPlayer(Position position, PlayerType type) {
+    private static Player createPlayer(PlayerType type) {
         var player = new Player();
-        player.position = position;
         player.type = type;
         return player;
     }
     public void addMatches(int matches) {
         this.drawnMatchesTotal += matches;
-    }
-
-    public enum Position {
-
-        ONE(1), TWO(2);
-
-        @Getter
-        private final int value;
-        Position(int value) {
-            this.value = value;
-        }
     }
 
     public enum PlayerType {

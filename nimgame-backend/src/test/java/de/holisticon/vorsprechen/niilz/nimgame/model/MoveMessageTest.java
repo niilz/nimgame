@@ -1,6 +1,5 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -16,28 +15,22 @@ class MoveMessageTest {
     @Test
     @SneakyThrows
     void deserializationIntoMoveMessageWorks() {
-        var moveMessageJson = "{\"player\":" +
-                "{" +
-                    "\"position\": \"ONE\"," +
-                    "\"currentDrawnMatches\": 2," +
-                    "\"type\": \"HUMAN\"" +
-                "}, " +
-                "\"autoPlay\": true}";
-        var expectedPlayerPosition = Player.Position.ONE;
+        var moveMessageHumanJson = "{" +
+                    "\"drawnMatches\": 2," +
+                    "\"autoPlay\": true" +
+                "}";
         var expectedDrawnMatches = 2;
         var expectedPlayerType = Player.PlayerType.HUMAN;
         var expectedAutoPlay = true;
-        var deserializedMoveMessage = mapper.readValue(moveMessageJson, MoveMessage.class);
-        assertEquals(expectedPlayerPosition, deserializedMoveMessage.player().getPosition());
-        assertEquals(expectedDrawnMatches, deserializedMoveMessage.player().getCurrentDrawnMatches());
-        assertEquals(expectedPlayerType, deserializedMoveMessage.player().getType());
+        var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageHuman.class);
+        assertEquals(expectedDrawnMatches, deserializedMoveMessage.drawnMatches());
         assertEquals(expectedAutoPlay, deserializedMoveMessage.autoPlay());
     }
 
     @Test
     void invalidPlayerPositionCanNotBeDeserialized() {
         var moveMessageJson = "{\"player\": \"NONE\", \"drawnMatches\": 2}";
-        assertThrows(JsonMappingException.class, () -> mapper.readValue(moveMessageJson, MoveMessage.class));
+        assertThrows(JsonMappingException.class, () -> mapper.readValue(moveMessageJson, MoveMessageHuman.class));
     }
 
 }
