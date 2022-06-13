@@ -63,7 +63,7 @@ public class GameState {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
         }
         if (drawnMatches > remainingMatches) {
-            throw new IllegalArgumentException("Player must not draw matches than there remain");
+            throw new IllegalArgumentException("Player must not draw more matches than there are remaining");
         }
         remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
