@@ -23,9 +23,9 @@ class GameStateTest {
         var gameState = new GameState(true);
         gameState.startGame();
         assertThrows(IllegalArgumentException.class,
-                () -> gameState.makeMove(0));
+                () -> gameState.makeMove(0, Player.PlayerRank.ONE));
         assertThrows(IllegalArgumentException.class,
-                () -> gameState.makeMove(4));
+                () -> gameState.makeMove(4, Player.PlayerRank.ONE));
     }
 
     @Test

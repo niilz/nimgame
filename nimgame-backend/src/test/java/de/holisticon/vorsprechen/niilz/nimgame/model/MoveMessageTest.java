@@ -14,16 +14,30 @@ class MoveMessageTest {
 
     @Test
     @SneakyThrows
-    void deserializationIntoMoveMessageWorks() {
+    void deserializationIntoMoveMessageHumanWorks() {
         var moveMessageHumanJson = "{" +
+                    "\"playerRank\": \"ONE\"," +
                     "\"drawnMatches\": 2," +
                     "\"autoPlay\": true" +
                 "}";
+        var expectedPlayerRank = Player.PlayerRank.ONE;
         var expectedDrawnMatches = 2;
         var expectedAutoPlay = true;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageHuman.class);
+        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayerRank());
         assertEquals(expectedDrawnMatches, deserializedMoveMessage.getDrawnMatches());
         assertEquals(expectedAutoPlay, deserializedMoveMessage.isAutoPlay());
+    }
+
+    @Test
+    @SneakyThrows
+    void deserializationIntoMoveMessageComputerWorks() {
+        var moveMessageHumanJson = "{" +
+                "\"playerRank\": \"TWO\"" +
+                "}";
+        var expectedPlayerRank = Player.PlayerRank.TWO;
+        var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageComputer.class);
+        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayerRank());
     }
 
     @Test

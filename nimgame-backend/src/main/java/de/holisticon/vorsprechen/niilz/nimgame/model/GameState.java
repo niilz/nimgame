@@ -54,7 +54,10 @@ public class GameState {
         this.currentPlayer = this.nextPlayer;
         this.nextPlayer = tempPlayer;
     }
-    public void makeMove(int drawnMatches) {
+    public void makeMove(int drawnMatches, Player.PlayerRank rank) {
+        if (rank != currentPlayer.getRank()) {
+            throw new IllegalArgumentException("Same Player must not play again");
+        }
         if (drawnMatches < 1 || drawnMatches > 3) {
             throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
         }

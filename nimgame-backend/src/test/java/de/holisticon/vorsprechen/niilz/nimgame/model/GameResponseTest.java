@@ -3,6 +3,7 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameResponseTest {
@@ -20,10 +21,18 @@ class GameResponseTest {
         var gameState = new GameState(true);
         gameState.startGame();
         var message = GameStateMessage.from(gameState);
-        var expectedPlayerPosition = gameState.getCurrentPlayer();
         var successResponse = new GameResponseSuccess(message);
         assertTrue(successResponse instanceof  GameResponse);
         assertEquals(GameState.INITIAL_MATCH_COUNT, successResponse.message().currentMatchCount());
+    }
+
+    @Test
+    void samePlayerMustNotPlayAgain() {
+        var gameState = new GameState(true);
+        gameState.startGame();
+        var currentRank = gameState.getCurrentPlayer().getRank();
+        gameState.makeMove(1, currentRank);
+        assertThrows(IllegalArgumentException.class, () -> gameState.makeMove(1, currentRank));
     }
 
 }

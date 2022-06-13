@@ -1,9 +1,11 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
-public record GameStateMessage(int currentMatchCount, GameState.State gameState) {
+public record GameStateMessage(Player.PlayerRank player, int currentMatchCount, GameState.State gameState) {
 
     public static GameStateMessage from(GameState gameState) {
-        return new GameStateMessage(gameState.getRemainingMatches(),
-                gameState.getState());
+        var rank = gameState.getCurrentPlayer() == null
+                ? null
+                : gameState.getCurrentPlayer().getRank();
+        return new GameStateMessage(rank, gameState.getRemainingMatches(), gameState.getState());
     }
 }

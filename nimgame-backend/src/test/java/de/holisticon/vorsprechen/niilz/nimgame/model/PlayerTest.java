@@ -11,11 +11,15 @@ class PlayerTest {
     void playersHaveGivenCorrectTypeOnInitalization() {
         var expectedTypePlayerOne = Player.PlayerType.HUMAN;
         var expectedTypePlayerTwo = Player.PlayerType.COMPUTER;
+        var expectedRankPlayerOne = Player.PlayerRank.ONE;
+        var expectedRankPlayerTwo = Player.PlayerRank.TWO;
         var players = Player.createPlayers();
         var playerOne = players[0];
         assertEquals(expectedTypePlayerOne, playerOne.getType());
+        assertEquals(expectedRankPlayerOne, playerOne.getRank());
         var playerTwo = players[1];
         assertEquals(expectedTypePlayerTwo, playerTwo.getType());
+        assertEquals(expectedRankPlayerTwo, playerTwo.getRank());
         var expectedTypeHuman = Player.PlayerType.HUMAN;
         var twoHumanPlayers = Player.createPlayers(false);
         var playerOneHuman = twoHumanPlayers[0];

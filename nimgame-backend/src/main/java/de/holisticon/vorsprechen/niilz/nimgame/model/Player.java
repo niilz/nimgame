@@ -9,6 +9,7 @@ import javax.swing.text.Position;
 public class Player {
 
     private PlayerType type;
+    private PlayerRank rank;
 
     @JsonIgnore
     private int drawnMatchesTotal;
@@ -20,18 +21,19 @@ public class Player {
     }
 
     public static Player[] createPlayers(boolean isTwoComputer) {
-        var playerOne = createPlayer();
+        var playerOne = createPlayer(PlayerRank.ONE);
         var playerTwo = isTwoComputer
-                ? createPlayer(PlayerType.COMPUTER)
-                : createPlayer();
+                ? createPlayer(PlayerRank.TWO, PlayerType.COMPUTER)
+                : createPlayer(PlayerRank.TWO);
         return new Player[] {playerOne, playerTwo};
     }
 
-    private static Player createPlayer() {
-        return createPlayer(PlayerType.HUMAN);
+    private static Player createPlayer(PlayerRank rank) {
+        return createPlayer(rank, PlayerType.HUMAN);
     }
-    private static Player createPlayer(PlayerType type) {
+    private static Player createPlayer(PlayerRank rank, PlayerType type) {
         var player = new Player();
+        player.rank = rank;
         player.type = type;
         return player;
     }
@@ -41,5 +43,9 @@ public class Player {
 
     public enum PlayerType {
         HUMAN, COMPUTER
+    }
+
+    public enum PlayerRank {
+        ONE, TWO
     }
 }

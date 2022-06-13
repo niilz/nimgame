@@ -48,10 +48,10 @@ public class NimGameController {
                 gameService.makeMove(humanMove);
                 // Autoplay means trigger the computer-move immediately
                 if (humanMove.isAutoPlay()) {
-                    gameService.makeComputerMove();
+                    gameService.makeComputerMove(move.getPlayerRank());
                 }
             } else {
-                gameService.makeComputerMove();
+                gameService.makeComputerMove(move.getPlayerRank());
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new GameResponseError(e.getMessage()));
