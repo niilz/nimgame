@@ -1,4 +1,9 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
-public record MoveMessageHuman(int drawnMatches, boolean autoPlay) implements MoveMessage {
+import lombok.Getter;
+
+@Getter
+public class MoveMessageHuman extends MoveMessage {
+    int drawnMatches;
+    boolean autoPlay;
 }

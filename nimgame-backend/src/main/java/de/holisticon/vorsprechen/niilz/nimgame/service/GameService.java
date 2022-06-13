@@ -53,8 +53,8 @@ public class GameService {
     public void makeMove(MoveMessage move) {
         if (move instanceof MoveMessageHuman messageHuman) {
             log.info("Attempting move for Human-Player, who has drawn '{}' matches",
-                    messageHuman.drawnMatches());
-            gameState.makeMove(messageHuman.drawnMatches());
+                    messageHuman.getDrawnMatches());
+            gameState.makeMove(messageHuman.getDrawnMatches());
         } else if (move instanceof MoveMessageComputer) {
             var matchesToDraw = decideMatchCountForComputer();
             var computer = gameState.getCurrentPlayer();

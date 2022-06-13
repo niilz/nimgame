@@ -4,9 +4,7 @@ import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
-import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageComputer;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;
-import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -49,7 +47,7 @@ public class NimGameController {
             if (move instanceof MoveMessageHuman humanMove) {
                 gameService.makeMove(humanMove);
                 // Autoplay means trigger the computer-move immediately
-                if (humanMove.autoPlay()) {
+                if (humanMove.isAutoPlay()) {
                     gameService.makeComputerMove();
                 }
             } else {

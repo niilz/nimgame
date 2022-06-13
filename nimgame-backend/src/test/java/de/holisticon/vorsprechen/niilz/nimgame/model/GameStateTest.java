@@ -37,5 +37,5 @@ class GameStateTest {
         assertEquals(currentPlayer, gameState.getNextPlayer());
         assertEquals(nextPlayer, gameState.getCurrentPlayer());
     }
-    
+
 }

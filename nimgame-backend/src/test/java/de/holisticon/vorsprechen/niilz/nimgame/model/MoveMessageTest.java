@@ -20,11 +20,10 @@ class MoveMessageTest {
                     "\"autoPlay\": true" +
                 "}";
         var expectedDrawnMatches = 2;
-        var expectedPlayerType = Player.PlayerType.HUMAN;
         var expectedAutoPlay = true;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageHuman.class);
-        assertEquals(expectedDrawnMatches, deserializedMoveMessage.drawnMatches());
-        assertEquals(expectedAutoPlay, deserializedMoveMessage.autoPlay());
+        assertEquals(expectedDrawnMatches, deserializedMoveMessage.getDrawnMatches());
+        assertEquals(expectedAutoPlay, deserializedMoveMessage.isAutoPlay());
     }
 
     @Test
