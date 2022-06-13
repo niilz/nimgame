@@ -38,4 +38,15 @@ class GameStateTest {
         assertEquals(nextPlayer, gameState.getCurrentPlayer());
     }
 
+    @Test
+    void ifComputerOpponentIsEnabledOnePlayerMustBeComputer() {
+        var gameState = new GameState(true);
+        gameState.startGame();
+        if (gameState.getCurrentPlayer().getType() == Player.PlayerType.HUMAN) {
+            assertEquals(Player.PlayerType.COMPUTER, gameState.getNextPlayer().getType());
+        } else {
+            assertEquals(Player.PlayerType.COMPUTER, gameState.getCurrentPlayer().getType());
+            assertEquals(Player.PlayerType.HUMAN, gameState.getNextPlayer().getType());
+        }
+    }
 }
