@@ -94,4 +94,18 @@ public class GameService {
     public boolean isCurrentPlayerComputer() {
         return gameState.getCurrentPlayer().getType() == Player.PlayerType.COMPUTER;
     }
+
+    public boolean shouldMakeAutoMove(boolean autoPlay) {
+        // Only allow autoPlay if the current Player is of Type Computer
+        if (!isCurrentPlayerComputer()) {
+            return false;
+        }
+        // Only make autoPlay move if user wants it
+        if (!autoPlay) {
+            return false;
+        }
+        // Do not make an autoplay if the game is not running anymore
+        // (for example if it is already won in the last move)
+        return gameState.getState() == GameState.State.RUNNING;
+    }
 }

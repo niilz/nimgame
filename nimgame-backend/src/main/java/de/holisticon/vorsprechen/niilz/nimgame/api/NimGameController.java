@@ -48,7 +48,7 @@ public class NimGameController {
                 gameService.makeMove(humanMove);
                 // Autoplay means trigger the computer-move immediately
                 // (autoplay is ignored if next-player is not a computer
-                if (gameService.isCurrentPlayerComputer() && humanMove.isAutoPlay()) {
+                if (gameService.shouldMakeAutoMove(humanMove.isAutoPlay())) {
                     gameService.makeComputerMove(gameService.getCurrentPlayersRank());
                 }
             } else {
