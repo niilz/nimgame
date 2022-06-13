@@ -59,14 +59,16 @@ public class GameService {
             throw new IllegalArgumentException("Player is of wrong type");
         }
         if (move instanceof MoveMessageHuman messageHuman) {
-            log.info("Attempting move for Human-Player, who has drawn '{}' matches",
+            log.info("Move for Human-Player, who has drawn '{}' matches",
                     messageHuman.getDrawnMatches());
             gameState.makeMove(messageHuman.getDrawnMatches(), move.getPlayerRank());
         } else if (move instanceof MoveMessageComputer) {
-            var matchesToDraw = decideMatchCountForComputer();
+            var randomlyDrawnMatches = decideMatchCountForComputer();
+            log.info("Move for Computer-Player, who has drawn '{}' matches",
+                    randomlyDrawnMatches);
             var computer = gameState.getCurrentPlayer();
             assert(computer.getType() == Player.PlayerType.COMPUTER);
-            gameState.makeMove(matchesToDraw, move.getPlayerRank());
+            gameState.makeMove(randomlyDrawnMatches, move.getPlayerRank());
         } else {
             throw new IllegalArgumentException("Move must be of type Human or Computer");
         }
