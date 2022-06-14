@@ -6,4 +6,6 @@ type GameProps = {
   state: GameState;
 };
 
-export function Game(props: GameProps) {}
+export function Game(props: GameProps) {
+  return <div>THE GAME</div>
+}

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 import { GameState } from "./model/GameState";
-import {makeFetch} from "./service/FetchService";
+import { makeFetch } from "./service/FetchService";
+import { Game } from "./components/game/Game";
 
 function App() {
   const [appState, setAppState] = useState<null | GameState>(null);
@@ -31,9 +32,9 @@ function App() {
           Learn React
         </a>
       </header>
-      <div>
-        <h2>{appState == null ? "LOADING..." : "initialized"}</h2>
-      </div>
+      <main>
+        {appState == null ? <h2>"LOADING..."</h2> : <Game state={appState} />}
+      </main>
     </div>
   );
 }
