@@ -1,11 +1,23 @@
-import React from "react";
 import { GameState } from "../../model/GameState";
+import { GameStateMessage } from "../../model/GameStateMessage";
+import { Matches } from "../Matches";
 import styles from "./components/Game.module.css";
 
 type GameProps = {
-  state: GameState;
+  state: GameStateMessage;
+  onStart: () => void;
+  onRestart: () => void;
 };
 
 export function Game(props: GameProps) {
-  return <div>THE GAME</div>
+  return (
+    <div>
+      <Matches remainingMatches={props.state.currentMatchCount} />
+      {props.state.gameState == GameState.RUNNING ? (
+        <button onClick={props.onRestart}>restart</button>
+      ) : (
+        <button onClick={props.onStart}>start</button>
+      )}
+    </div>
+  );
 }

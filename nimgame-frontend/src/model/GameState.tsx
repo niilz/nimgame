@@ -1,5 +1,5 @@
 export enum GameState {
-  STOPPED,
-  RUNNING,
-  WON,
+  STOPPED = "STOPPED",
+  RUNNING = "RUNNING",
+  WON = "WON",
 }

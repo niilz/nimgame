@@ -8,11 +8,11 @@ export type GameStateMessage = {
 };
 
 enum Player {
-  ONE,
-  TWO,
+  ONE = "ONE",
+  TWO = "TWO",
 }
 
 enum PlayerType {
-  HUMAN,
-  COMPUTER,
+  HUMAN = "HUMAN",
+  COMPUTER = "COMPUTER",
 }

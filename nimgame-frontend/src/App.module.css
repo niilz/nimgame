@@ -11,6 +11,7 @@
 }
 
 :root {
+  font-size: 10px;
   --primary-color: #2d2d2d;
   --secondary-color: #ff2d55;
   font-family: "Open Sans";
