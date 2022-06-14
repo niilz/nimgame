@@ -19,18 +19,8 @@ function App() {
   return (
     <div className={styles.App}>
       <header className={styles["App-header"]}>
+        <h1>The NimGame by</h1>
         <img src={logo} className={styles["App-logo"]} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className={styles["App-link"]}
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
       <main>
         {appState == null ? <h2>"LOADING..."</h2> : <Game state={appState} />}
