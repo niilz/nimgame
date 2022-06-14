@@ -8,7 +8,7 @@ class GameStateMessageTest {
 
     @Test
     void unstartedGameHasNoPlayerPosition() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         var expectedState = GameState.State.STOPPED;
         var gameStateMessage = GameStateMessage.from(gameState);
         var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
@@ -18,16 +18,28 @@ class GameStateMessageTest {
 
     @Test
     void canCreateGameStateMessageFromGameState() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         gameState.startGame();
         var expectedCurrentPlayer = gameState.getCurrentPlayer();
         var expectedState = GameState.State.RUNNING;
-        var gameStateMessage = GameStateMessage.from(gameState);
         var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
+        var gameStateMessage = GameStateMessage.from(gameState);
         assertEquals(expectedState, gameStateMessage.gameState());
         assertEquals(expectedCurrentMatches, gameStateMessage.currentMatchCount());
         assertEquals(expectedCurrentPlayer.getRank(), gameStateMessage.player());
         assertEquals(expectedCurrentPlayer.getType(), gameStateMessage.type());
+    }
+
+    @Test
+    void canCreateGameStateMessageEvenIfGameHasNotStarted() {
+        var gameState = new GameState();
+        var expectedState = GameState.State.STOPPED;
+        var expectedCurrentMatches = GameState.INITIAL_MATCH_COUNT;
+        var gameStateMessage = GameStateMessage.from(gameState);
+        assertEquals(expectedState, gameStateMessage.gameState());
+        assertEquals(expectedCurrentMatches, gameStateMessage.currentMatchCount());
+        assertNull(gameStateMessage.player());
+        assertNull(gameStateMessage.type());
     }
 
 }

@@ -10,7 +10,7 @@ class GameStateTest {
 
     @Test
     void initialGameStateIsCorrect() {
-        var initalGameState = new GameState(true);
+        var initalGameState = new GameState();
         var expectedGameState = GameState.State.STOPPED;
         assertEquals(expectedGameState, initalGameState.getState());
         var expectedMatchCount = GameState.INITIAL_MATCH_COUNT;
@@ -20,7 +20,7 @@ class GameStateTest {
 
     @Test
     void decutMatchesFailsWhenMatchCountNotBetween1and3() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         gameState.startGame();
         assertThrows(IllegalArgumentException.class,
                 () -> gameState.makeMove(0, Player.PlayerRank.ONE));
@@ -30,7 +30,7 @@ class GameStateTest {
 
     @Test
     void swappingPlayersWorks() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         var currentPlayer = gameState.getCurrentPlayer();
         var nextPlayer = gameState.getNextPlayer();
         gameState.swapPlayers();
@@ -40,8 +40,8 @@ class GameStateTest {
 
     @Test
     void ifComputerOpponentIsEnabledOnePlayerMustBeComputer() {
-        var gameState = new GameState(true);
-        gameState.startGame();
+        var gameState = new GameState();
+        gameState.startGame(true);
         if (gameState.getCurrentPlayer().getType() == Player.PlayerType.HUMAN) {
             assertEquals(Player.PlayerType.COMPUTER, gameState.getNextPlayer().getType());
         } else {
@@ -52,7 +52,7 @@ class GameStateTest {
 
     @Test
     void ifNoComputerIsActivatedBothPlayersAreHuman() {
-        var gameState = new GameState(false);
+        var gameState = new GameState();
         gameState.startGame();
         assertEquals(Player.PlayerType.HUMAN, gameState.getCurrentPlayer().getType());
         assertEquals(Player.PlayerType.HUMAN, gameState.getNextPlayer().getType());
@@ -60,7 +60,7 @@ class GameStateTest {
 
     @Test
     void whenLastMatchIsTakenGameIsWon() {
-        var gameState = new GameState(false);
+        var gameState = new GameState();
         gameState.startGame();
         // Make sure Player TWO is the currentPlayer in the beginning
         if (gameState.getCurrentPlayer().getRank() == Player.PlayerRank.ONE) {
@@ -80,7 +80,7 @@ class GameStateTest {
 
     @Test
     void thereCanNeverBeLessThanZeroRemainingMatches() {
-        var gameState = new GameState(false);
+        var gameState = new GameState();
         gameState.startGame();
         // Make sure Player TWO is the currentPlayer in the beginning
         if (gameState.getCurrentPlayer().getRank() == Player.PlayerRank.ONE) {

@@ -25,28 +25,26 @@ public class GameService {
 
     GameService() {
         random = new Random();
+        gameState = new GameState();
     }
 
-    private void init(boolean computerOpponent) {
-        gameState = new GameState(computerOpponent);
-    }
     public boolean isGameStarted() {
         return gameState != null && gameState.getState() == GameState.State.RUNNING;
     }
     public void startGame(boolean computerOpponent) {
-        init(computerOpponent);
         try {
-            gameState.startGame();
+            gameState.startGame(computerOpponent);
         } catch (IllegalStateException e) {
             log.error("Game could not be started because of illegal state", e);
         }
     }
 
     public void resetGame() {
-        gameState = null;
+        gameState = new GameState();
     }
 
     public void restartGame(boolean computerOpponent) {
+        resetGame();
         startGame(computerOpponent);
     }
 

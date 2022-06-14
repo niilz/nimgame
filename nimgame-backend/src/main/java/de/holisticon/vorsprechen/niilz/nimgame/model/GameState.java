@@ -18,24 +18,30 @@ public class GameState {
     @Getter
     private Integer remainingMatches;
 
-    private final boolean playAgainstComputer;
+    private boolean playAgainstComputer;
 
     @Getter
     private Player currentPlayer;
     @Getter
     private Player nextPlayer;
 
-    public GameState(boolean computerOpponent) {
+    public GameState() {
         this.state = State.STOPPED;
         this.remainingMatches = INITIAL_MATCH_COUNT;
-        this.playAgainstComputer = computerOpponent;
         log.info("GameState has been created");
+    }
+    public void setComputerOpponent(boolean playAgainstComputer) {
+        this.playAgainstComputer = playAgainstComputer;
     }
 
     public void startGame() {
+        startGame(false);
+    }
+    public void startGame(boolean playAgainstComputer) {
         if (this.state == State.RUNNING) {
             throw new IllegalArgumentException("Running Game cannot be started");
         }
+        setComputerOpponent(playAgainstComputer);
         this.state = State.RUNNING;
         var players = Player.createPlayers(playAgainstComputer);
         this.currentPlayer = players[0];

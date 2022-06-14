@@ -18,7 +18,7 @@ class GameResponseTest {
 
     @Test
     void canCreateGameResponseWithStateMessage() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         gameState.startGame();
         var message = GameStateMessage.from(gameState);
         var successResponse = new GameResponseSuccess(message);
@@ -28,7 +28,7 @@ class GameResponseTest {
 
     @Test
     void samePlayerMustNotPlayAgain() {
-        var gameState = new GameState(true);
+        var gameState = new GameState();
         gameState.startGame();
         var currentRank = gameState.getCurrentPlayer().getRank();
         gameState.makeMove(1, currentRank);
