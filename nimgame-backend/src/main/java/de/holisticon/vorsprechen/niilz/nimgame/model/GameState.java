@@ -73,10 +73,11 @@ public class GameState {
         }
         remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
-        swapPlayers();
         if (remainingMatches == 0) {
             state = State.WON;
             log.info("Game has been finished");
+        } else {
+            swapPlayers();
         }
     }
 
