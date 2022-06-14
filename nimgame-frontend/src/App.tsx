@@ -2,22 +2,14 @@ import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 import { GameState } from "./model/GameState";
-import { API_BASE_URL } from "./Constants";
-import { GameStateMessage } from "./model/GameStateMessage";
+import {makeFetch} from "./service/FetchService";
 
 function App() {
   const [appState, setAppState] = useState<null | GameState>(null);
 
   useEffect(() => {
     const initGame = async () => {
-      const options: RequestInit = {
-        mode: "cors",
-        headers: {
-          "content-type": "application/json",
-        },
-      };
-      const stateResponse = await fetch(`${API_BASE_URL}/state`, options);
-      const stateMessage: GameStateMessage = await stateResponse.json();
+      const stateMessage = await makeFetch("state");
       setAppState(stateMessage.gameState);
     };
     initGame();
