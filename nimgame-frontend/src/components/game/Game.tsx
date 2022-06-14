@@ -1,6 +1,6 @@
 import { GameState } from "../../model/GameState";
 import { GameStateMessage } from "../../model/GameStateMessage";
-import { Matches } from "../Matches";
+import { Matches } from "../matches/Matches";
 import styles from "./components/Game.module.css";
 
 type GameProps = {
