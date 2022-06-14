@@ -62,13 +62,20 @@ public class NimGameController {
     }
 
     @GetMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameResponse> initGame(@RequestParam(required = false) boolean computerOpponent) {
+    public ResponseEntity<GameResponse> initGame(
+            @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean autoPlay) {
         if (gameService.isGameStarted()) {
             var error = new GameResponseError("Game has already been started");
             return ResponseEntity.badRequest().body(error);
         }
         log.info("Starting initial Game state");
         gameService.startGame(computerOpponent);
+        // If Computer starts and User wants autoPlay,
+        // then immediately make move for Computer on start
+        if (autoPlay && gameService.isCurrentPlayerComputer()) {
+            gameService.makeComputerMove(gameService.getCurrentPlayersRank());
+        }
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
     }
