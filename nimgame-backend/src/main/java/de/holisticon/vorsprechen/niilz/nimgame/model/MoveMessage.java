@@ -9,11 +9,11 @@ import lombok.Getter;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "playerType", visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = MoveMessageHuman.class, name = "HUMAN"),
         @JsonSubTypes.Type(value = MoveMessageComputer.class, name = "COMPUTER")})
-public class MoveMessage {
+public abstract class MoveMessage {
 
     @Getter
-    @JsonProperty("playerType")
-    private Player.PlayerType playerType;
+    Player.PlayerType playerType;
+
     @Getter
     private final Player.PlayerRank playerRank;
 
