@@ -14,6 +14,7 @@
   --primary-color: #2d2d2d;
   --secondary-color: #ff2d55;
   font-family: "Open Sans";
+  font-variation-settings: "wght" 500;
 }
 
 .App {
