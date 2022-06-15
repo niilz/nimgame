@@ -63,7 +63,7 @@ public class NimGameController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> initGame(
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
@@ -82,7 +82,7 @@ public class NimGameController {
         return ResponseEntity.ok(message);
     }
 
-    @GetMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameStateMessage> restart(@RequestParam(required = false) boolean computerOpponent) {
         gameService.restartGame(computerOpponent);
         return ResponseEntity.ok(gameService.getGameStateMessage());
