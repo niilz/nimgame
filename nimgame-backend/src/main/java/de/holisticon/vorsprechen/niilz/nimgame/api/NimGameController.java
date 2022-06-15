@@ -7,6 +7,10 @@ import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -27,16 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @Tag(name = "nimgame", description = "The NimGame-Api")
 @Slf4j
-public class NimGameController {
-
-    private final GameService gameService;
-
-    NimGameController(GameService gameService) {
-        this.gameService = gameService;
-    }
+public record NimGameController(GameService gameService) {
 
     @GetMapping("/state")
     @Operation(summary = "Current GameState", description = "Retreive the current state of the game", tags = {"nimgame"})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "GameState could be read successfully",
+            content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = GameResponseSuccess.class))}))
     public ResponseEntity<GameResponse> getState() {
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
@@ -44,6 +45,14 @@ public class NimGameController {
 
     @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Start the game", description = "Start a new NimGame, as long as it is not already running", tags = {"nimgame"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Game has been started successfully",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = GameResponseSuccess.class))}),
+            @ApiResponse(responseCode = "400", description = "Game could not be started",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = GameResponseError.class))})
+    })
     public ResponseEntity<GameResponse> initGame(
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
@@ -59,6 +68,9 @@ public class NimGameController {
 
     @PostMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Restart the game", description = "Start a new NimGame no matter if a current game is already running", tags = {"nimgame"})
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Game was restarted successfully", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = GameResponseSuccess.class))
+    }))
     public ResponseEntity<GameResponse> restart(
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
@@ -70,6 +82,14 @@ public class NimGameController {
 
     @PostMapping(value = "/draw", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Draw matches", description = "Make a move for a player an draw matches", tags = {"nimgame"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Move was successfull",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = GameResponseSuccess.class))}),
+            @ApiResponse(responseCode = "400", description = "Move-Attempt caused an error",
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = GameResponseError.class))})
+    })
     public ResponseEntity<GameResponse> drawMatches(@RequestBody MoveMessage move) {
         if (!gameService.isGameStarted()) {
             var error = new GameResponseError("Game must be started before matches can be drawn");

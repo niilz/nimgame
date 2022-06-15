@@ -48,10 +48,16 @@ public class GameService {
         startGame(computerOpponent);
     }
 
+    /**
+     * @return The current state of the game in a client consumable form
+     */
     public GameStateMessage getGameStateMessage() {
         return GameStateMessage.from(gameState);
     }
 
+    /**
+     * @param move Meta information to make the next move for a player
+     */
     public void makeMove(MoveMessage move) {
         if (gameState.getCurrentPlayer().getType() != move.getPlayerType()) {
             throw new IllegalArgumentException("Player is of wrong type");
@@ -72,10 +78,17 @@ public class GameService {
         }
     }
 
+    /**
+     * @param playerRank Which rank/position this moves player has (One | Two)
+     */
     public void makeComputerMove(Player.PlayerRank playerRank) {
         makeMove(new MoveMessageComputer(playerRank));
     }
 
+    /**
+     * @return A randomized amount matches that the computer will draw between 1 and 3, where the max is limited
+     * by the amount of remaining matches in the game
+     */
     public int decideMatchCountForComputer() {
         var maxMatchesToDraw = Math.min(MAX_MATCH_COUNT_TO_DRAW, gameState.getRemainingMatches());
         var matchCount = random.nextInt(maxMatchesToDraw) + RANDOM_OFFSET;
@@ -83,18 +96,31 @@ public class GameService {
         return matchCount;
     }
 
+    /**
+     * @return The rank/position (one or two) of the current player
+     */
     public Player.PlayerRank getCurrentPlayersRank() {
         return gameState.getCurrentPlayer().getRank();
     }
 
+    /**
+     * @return The amount of remaining matches in the game (0 == game is finished/won)
+     */
     public int getRemainingMatches() {
         return gameState.getRemainingMatches();
     }
 
+    /**
+     * @return Whether the current player is of type computer
+     */
     public boolean isCurrentPlayerComputer() {
         return gameState.getCurrentPlayer().getType() == Player.PlayerType.COMPUTER;
     }
 
+    /**
+     * @param autoPlay Whether the human player wants the computer to make its move automatically
+     * @return Whether a automatically invoked computer move is appropriate
+     */
     public boolean shouldMakeAutoMove(boolean autoPlay) {
         // Only allow autoPlay if the current Player is of Type Computer
         if (!isCurrentPlayerComputer()) {

@@ -11,6 +11,9 @@ import java.util.Random;
 @Slf4j
 public class GameState {
 
+    /**
+     * The total amout of matches that a game starts with
+     */
     public static final int INITIAL_MATCH_COUNT = 13;
 
     @Getter
@@ -18,30 +21,34 @@ public class GameState {
     @Getter
     private Integer remainingMatches;
 
-    private boolean playAgainstComputer;
-
     @Getter
     private Player currentPlayer;
     @Getter
     private Player nextPlayer;
 
+    /**
+     * Constructs a new GameState in the {@link State#STOPPED} state
+     */
     public GameState() {
         this.state = State.STOPPED;
         this.remainingMatches = INITIAL_MATCH_COUNT;
         log.info("GameState has been created");
     }
-    public void setComputerOpponent(boolean playAgainstComputer) {
-        this.playAgainstComputer = playAgainstComputer;
-    }
 
+    /**
+     * Starts a new NimGame without a computer opponent (two human players)
+     */
     public void startGame() {
         startGame(false);
     }
+
+    /**
+     * @param playAgainstComputer Wheter one player should be a computer
+     */
     public void startGame(boolean playAgainstComputer) {
         if (this.state == State.RUNNING) {
             throw new IllegalArgumentException("Running Game cannot be started");
         }
-        setComputerOpponent(playAgainstComputer);
         this.state = State.RUNNING;
         var players = Player.createPlayers(playAgainstComputer);
         this.currentPlayer = players[0];
@@ -58,6 +65,11 @@ public class GameState {
         this.currentPlayer = this.nextPlayer;
         this.nextPlayer = tempPlayer;
     }
+
+    /**
+     * @param drawnMatches The ammount of matches that have been drawn in that move
+     * @param rank Whether player ONE or TWO is making the move
+     */
     public void makeMove(int drawnMatches, Player.PlayerRank rank) {
         if (state == State.WON) {
             throw new IllegalStateException("Game is already won");
@@ -81,6 +93,9 @@ public class GameState {
         }
     }
 
+    /**
+     * Represents the current state of the game
+     */
     public enum State {
         RUNNING, STOPPED, WON,
     }
