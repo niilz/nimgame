@@ -7,8 +7,12 @@ import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +56,10 @@ public record NimGameController(GameService gameService) {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = GameResponseError.class))})
     })
+    @Parameters(value = {
+            @Parameter(name = "computerOpponent", description = "Whether one player should be a computer"),
+            @Parameter(name = "autoPlay", description = "Whether the computer should play immediately by itself if it is its turn first")
+    })
     public ResponseEntity<GameResponse> initGame(
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
@@ -71,6 +78,10 @@ public record NimGameController(GameService gameService) {
     @ApiResponses(@ApiResponse(responseCode = "200", description = "Game was restarted successfully", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = GameResponseSuccess.class))
     }))
+    @Parameters(value = {
+            @Parameter(name = "computerOpponent", description = "Whether one player should be a computer"),
+            @Parameter(name = "autoPlay", description = "Whether the computer should play immediately by itself if it is its turn first")
+    })
     public ResponseEntity<GameResponse> restart(
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
@@ -90,7 +101,25 @@ public record NimGameController(GameService gameService) {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = GameResponseError.class))})
     })
-    public ResponseEntity<GameResponse> drawMatches(@RequestBody MoveMessage move) {
+    public ResponseEntity<GameResponse> drawMatches(@RequestBody
+                                                        (content = @Content(examples = {
+                                                                @ExampleObject(name = "MoveMessageHuman",
+                                                                summary = "A human move",
+                                                                description = "The Move Request if a human plays",
+                                                                value = "{" +
+                                                                            "\"playerRank\": \"ONE\"," +
+                                                                            "\"playerType\": \"HUMAN\"," +
+                                                                            "\"drawnMatches\": 1," +
+                                                                            "\"autoPlay\": true" +
+                                                                        "}"),
+                                                                @ExampleObject(name = "MoveMessageComputer",
+                                                                        summary = "A computer move",
+                                                                        description = "The Move Request if a computer plays",
+                                                                        value = "{" +
+                                                                                "\"playerRank\": \"ONE\"," +
+                                                                                "\"playerType\": \"COMPUTER\"" +
+                                                                                "}"),
+                                                        })) MoveMessage move) {
         if (!gameService.isGameStarted()) {
             var error = new GameResponseError("Game must be started before matches can be drawn");
             return ResponseEntity.badRequest().body(error);
