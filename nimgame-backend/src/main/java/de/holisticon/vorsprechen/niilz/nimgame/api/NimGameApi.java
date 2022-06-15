@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @Tag(name = "nimgame", description = "The NimGame-Api")
 @Slf4j
-public record NimGameController(GameService gameService) {
+public record NimGameApi(GameService gameService) {
 
     @GetMapping("/state")
     @Operation(summary = "Current GameState", description = "Retreive the current state of the game", tags = {"nimgame"})
