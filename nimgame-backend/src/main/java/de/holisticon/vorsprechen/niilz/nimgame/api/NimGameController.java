@@ -34,8 +34,9 @@ public class NimGameController {
     }
 
     @GetMapping("/state")
-    public ResponseEntity<GameStateMessage> getState() {
-        return ResponseEntity.ok(gameService.getGameStateMessage());
+    public ResponseEntity<GameResponse> getState() {
+        var message = new GameResponseSuccess(gameService.getGameStateMessage());
+        return ResponseEntity.ok(message);
     }
 
     @PostMapping(value = "/draw", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,11 +49,7 @@ public class NimGameController {
             if (move instanceof MoveMessageHuman humanMove) {
                 // MakesMove (which includes swapping the players)
                 gameService.makeMove(humanMove);
-                // Autoplay means trigger the computer-move immediately
-                // (autoplay is ignored if next-player is not a computer
-                if (gameService.shouldMakeAutoMove(humanMove.isAutoPlay())) {
-                    gameService.makeComputerMove(gameService.getCurrentPlayersRank());
-                }
+                maybeMakeAutoMove(humanMove.isAutoPlay());
             } else {
                 gameService.makeComputerMove(move.getPlayerRank());
             }
@@ -71,20 +68,29 @@ public class NimGameController {
             var error = new GameResponseError("Game has already been started");
             return ResponseEntity.badRequest().body(error);
         }
-        log.info("Starting initial Game state");
         gameService.startGame(computerOpponent);
-        // If Computer starts and User wants autoPlay,
-        // then immediately make move for Computer on start
-        if (autoPlay && gameService.isCurrentPlayerComputer()) {
-            gameService.makeComputerMove(gameService.getCurrentPlayersRank());
-        }
+        maybeMakeAutoMove(autoPlay);
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
     }
 
     @PostMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameStateMessage> restart(@RequestParam(required = false) boolean computerOpponent) {
+    public ResponseEntity<GameResponse> restart(
+            @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean autoPlay) {
         gameService.restartGame(computerOpponent);
-        return ResponseEntity.ok(gameService.getGameStateMessage());
+        maybeMakeAutoMove(autoPlay);
+        var message = new GameResponseSuccess(gameService.getGameStateMessage());
+        return ResponseEntity.ok(message);
+    }
+
+    private void maybeMakeAutoMove(boolean autoPlay) {
+        // Autoplay means trigger the computer-move immediately
+        // (autoplay is ignored if next-player is not a computer
+        // Also, if Computer starts and User wants autoPlay,
+        // then immediately make move for Computer on start
+        if (gameService.shouldMakeAutoMove(autoPlay)) {
+            gameService.makeComputerMove(gameService.getCurrentPlayersRank());
+        }
     }
 }
