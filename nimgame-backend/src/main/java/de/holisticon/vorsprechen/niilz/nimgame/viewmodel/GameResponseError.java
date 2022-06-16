@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 /**
  * @param error The error that occured during a request
  */
-@Schema(description = "Reports an Error triggered by a request",
-        example = "{error: " + Constants.Error.GAME_MUST_BE_STARTED + "}")
+@Schema(description = "Reports an Error triggered by a request", example = Constants.Error.GAME_MUST_BE_STARTED)
 public record GameResponseError(@NonNull @NotEmpty String error) implements GameResponse {
 }
