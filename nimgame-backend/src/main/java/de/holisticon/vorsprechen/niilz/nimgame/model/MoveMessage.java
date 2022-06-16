@@ -2,6 +2,7 @@ package de.holisticon.vorsprechen.niilz.nimgame.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 /**
@@ -13,6 +14,7 @@ import lombok.Getter;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "playerType")
 @JsonSubTypes({@JsonSubTypes.Type(value = MoveMessageHuman.class, name = "HUMAN"),
         @JsonSubTypes.Type(value = MoveMessageComputer.class, name = "COMPUTER")})
+@Schema(oneOf = {MoveMessageHuman.class, MoveMessageComputer.class})
 public abstract class MoveMessage {
 
     @Getter

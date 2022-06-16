@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.api;
 
+import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
@@ -61,7 +62,7 @@ public interface NimGameApi {
                             schema = @Schema(implementation = GameResponseSuccess.class))}),
             @ApiResponse(responseCode = "400", description = "Move-Attempt caused an error",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = GameResponseError.class))})
+                            schema = @Schema(implementation = GameResponseError.class, example = Constants.Error.WRONG_MATCH_COUNT_DRAWN))})
     })
     ResponseEntity<GameResponse> drawMatches(@RequestBody
                                                      (content = @Content(examples = {

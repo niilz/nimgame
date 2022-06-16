@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
+import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,7 @@ public class GameState {
     public GameState() {
         this.state = State.STOPPED;
         this.remainingMatches = INITIAL_MATCH_COUNT;
-        log.info("GameState has been created");
+        log.info(Constants.Message.GAME_STATE_CREATED);
     }
 
     /**
@@ -47,7 +48,7 @@ public class GameState {
      */
     public void startGame(boolean playAgainstComputer) {
         if (this.state == State.RUNNING) {
-            throw new IllegalArgumentException("Running Game cannot be started");
+            throw new IllegalArgumentException(Constants.Error.GAME_ALREADY_STARTED);
         }
         this.state = State.RUNNING;
         var players = Player.createPlayers(playAgainstComputer);
@@ -57,7 +58,7 @@ public class GameState {
         if (new Random().nextBoolean()) {
             swapPlayers();
         }
-        log.info("Game has been started");
+        log.info(Constants.Message.GAME_STARTED);
     }
 
     void swapPlayers() {
@@ -72,22 +73,22 @@ public class GameState {
      */
     public void makeMove(int drawnMatches, Player.PlayerRank rank) {
         if (state == State.WON) {
-            throw new IllegalStateException("Game is already won");
+            throw new IllegalStateException(Constants.Error.GAME_ALREADY_WON);
         }
         if (rank != currentPlayer.getRank()) {
-            throw new IllegalArgumentException("Same Player must not play again");
+            throw new IllegalArgumentException(Constants.Error.SAME_PLAYER);
         }
         if (drawnMatches < 1 || drawnMatches > 3) {
-            throw new IllegalArgumentException("Player is only allowed to draw between 1 and 3 matches");
+            throw new IllegalArgumentException(Constants.Error.WRONG_MATCH_COUNT_DRAWN);
         }
         if (drawnMatches > remainingMatches) {
-            throw new IllegalArgumentException("Player must not draw more matches than there are remaining");
+            throw new IllegalArgumentException(Constants.Error.NOT_ENOUGH_MATCHES_REMAINING);
         }
         remainingMatches -= drawnMatches;
         currentPlayer.addMatches(drawnMatches);
         if (remainingMatches == 0) {
             state = State.WON;
-            log.info("Game has been finished");
+            log.info(Constants.Message.GAME_FINISHED);
         } else {
             swapPlayers();
         }

@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.api;
 
+import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
@@ -41,7 +42,7 @@ public record NimGameApiImpl(GameService gameService) implements NimGameApi {
             @RequestParam(required = false) boolean computerOpponent,
             @RequestParam(required = false) boolean autoPlay) {
         if (gameService.isGameStarted()) {
-            var error = new GameResponseError("Game has already been started");
+            var error = new GameResponseError(Constants.Error.GAME_ALREADY_STARTED);
             return ResponseEntity.badRequest().body(error);
         }
         gameService.startGame(computerOpponent);
@@ -65,7 +66,7 @@ public record NimGameApiImpl(GameService gameService) implements NimGameApi {
     @PostMapping(value = "/draw", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> drawMatches(@RequestBody MoveMessage move) {
         if (!gameService.isGameStarted()) {
-            var error = new GameResponseError("Game must be started before matches can be drawn");
+            var error = new GameResponseError(Constants.Error.GAME_MUST_BE_STARTED);
             return ResponseEntity.badRequest().body(error);
         }
         try {

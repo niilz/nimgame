@@ -1,5 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
+import de.holisticon.vorsprechen.niilz.nimgame.common.Constants.Error;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameState;
 import de.holisticon.vorsprechen.niilz.nimgame.model.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
@@ -35,7 +36,7 @@ public class GameService {
         try {
             gameState.startGame(computerOpponent);
         } catch (IllegalStateException e) {
-            log.error("Game could not be started because of illegal state", e);
+            log.error(Error.ILLEGAL_GAME_STATE, e);
         }
     }
 
@@ -60,7 +61,7 @@ public class GameService {
      */
     public void makeMove(MoveMessage move) {
         if (gameState.getCurrentPlayer().getType() != move.getPlayerType()) {
-            throw new IllegalArgumentException("Player is of wrong type");
+            throw new IllegalArgumentException(Error.INVALID_PLAYER_TYPE);
         }
         if (move instanceof MoveMessageHuman messageHuman) {
             log.info("Move for Human-Player, who has drawn '{}' matches",
@@ -74,7 +75,7 @@ public class GameService {
             assert(computer.getType() == Player.PlayerType.COMPUTER);
             gameState.makeMove(randomlyDrawnMatches, move.getPlayerRank());
         } else {
-            throw new IllegalArgumentException("Move must be of type Human or Computer");
+            throw new IllegalArgumentException(Error.PLAYER_TYPE_NOT_SUPPORTED);
         }
     }
 
