@@ -1,6 +1,5 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
-import de.holisticon.vorsprechen.niilz.nimgame.model.GameState;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageComputer;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageHuman;

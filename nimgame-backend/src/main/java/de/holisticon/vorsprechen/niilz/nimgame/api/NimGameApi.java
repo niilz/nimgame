@@ -1,9 +1,9 @@
 package de.holisticon.vorsprechen.niilz.nimgame.api;
 
 import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
-import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponse;
-import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseError;
-import de.holisticon.vorsprechen.niilz.nimgame.model.GameResponseSuccess;
+import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponse;
+import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponseError;
+import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponseSuccess;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -1,4 +1,7 @@
-package de.holisticon.vorsprechen.niilz.nimgame.model;
+package de.holisticon.vorsprechen.niilz.nimgame.viewmodel;
+
+import de.holisticon.vorsprechen.niilz.nimgame.service.GameState;
+import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

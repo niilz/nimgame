@@ -1,5 +1,7 @@
-package de.holisticon.vorsprechen.niilz.nimgame.model;
+package de.holisticon.vorsprechen.niilz.nimgame.service;
 
+import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
+import de.holisticon.vorsprechen.niilz.nimgame.service.GameState;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

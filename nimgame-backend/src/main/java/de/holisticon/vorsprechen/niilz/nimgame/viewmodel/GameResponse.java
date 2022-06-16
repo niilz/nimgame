@@ -1,4 +1,4 @@
-package de.holisticon.vorsprechen.niilz.nimgame.model;
+package de.holisticon.vorsprechen.niilz.nimgame.viewmodel;
 
 /**
  * The general Response-Type to an API-Request

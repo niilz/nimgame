@@ -1,6 +1,7 @@
-package de.holisticon.vorsprechen.niilz.nimgame.model;
+package de.holisticon.vorsprechen.niilz.nimgame.service;
 
 import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
+import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

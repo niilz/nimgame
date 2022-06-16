@@ -1,4 +1,4 @@
-package de.holisticon.vorsprechen.niilz.nimgame.model;
+package de.holisticon.vorsprechen.niilz.nimgame.viewmodel;
 
 import de.holisticon.vorsprechen.niilz.nimgame.common.Constants;
 import io.swagger.v3.oas.annotations.media.Schema;

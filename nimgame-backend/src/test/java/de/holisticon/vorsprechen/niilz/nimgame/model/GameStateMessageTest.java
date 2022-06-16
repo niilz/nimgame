@@ -1,5 +1,7 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
+import de.holisticon.vorsprechen.niilz.nimgame.service.GameState;
+import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameStateMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
