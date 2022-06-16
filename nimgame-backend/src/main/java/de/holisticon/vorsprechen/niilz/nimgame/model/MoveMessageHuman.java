@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 /**
  * Meta-Information which represents a game move for a computer player
  */
@@ -13,6 +16,8 @@ import lombok.Getter;
 public class MoveMessageHuman extends MoveMessage {
 
     private final Player.PlayerType playerType = Player.PlayerType.HUMAN;
+    @Min(1)
+    @Max(3)
     private final int drawnMatches;
 
     private final boolean autoPlay;

@@ -1,5 +1,7 @@
 package de.holisticon.vorsprechen.niilz.nimgame.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Optional;
 
 /**
@@ -10,7 +12,9 @@ import java.util.Optional;
  * @param currentMatchCount How many matches are remaining in the game
  * @param gameState Which state the current game has {@link GameState.State}
  */
-public record GameStateMessage(Player.PlayerRank player, Player.PlayerType type, int currentMatchCount,
+public record GameStateMessage(Player.PlayerRank player,
+                               Player.PlayerType type,
+                               @Min(0) @Max(GameState.INITIAL_MATCH_COUNT) int currentMatchCount,
                                GameState.State gameState) {
 
     /**
