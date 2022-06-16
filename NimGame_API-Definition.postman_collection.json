@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "abdc5a9d-d329-42c5-9a0c-5eea366fd315",
+		"name": "NimGame - API-Definition - Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api/v1",
+			"item": [
+				{
+					"name": "Start the game",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/start?computerOpponent=true&autoPlay=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"start"
+							],
+							"query": [
+								{
+									"key": "computerOpponent",
+									"value": "true",
+									"description": "Whether one player should be a computer"
+								},
+								{
+									"key": "autoPlay",
+									"value": "true",
+									"description": "Whether the computer should play immediately by itself if it is its turn first"
+								}
+							]
+						},
+						"description": "Start a new NimGame, as long as it is not already running"
+					},
+					"response": [
+						{
+							"name": "Game has been started successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/start?computerOpponent=true&autoPlay=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"start"
+									],
+									"query": [
+										{
+											"key": "computerOpponent",
+											"value": "true"
+										},
+										{
+											"key": "autoPlay",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+						},
+						{
+							"name": "Game could not be started",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/start?computerOpponent=true&autoPlay=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"start"
+									],
+									"query": [
+										{
+											"key": "computerOpponent",
+											"value": "true",
+											"description": "Whether one player should be a computer"
+										},
+										{
+											"key": "autoPlay",
+											"value": "true",
+											"description": "Whether the computer should play immediately by itself if it is its turn first"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"error\": \"Game has already been started\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Restart the game",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restart?computerOpponent=true&autoPlay=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restart"
+							],
+							"query": [
+								{
+									"key": "computerOpponent",
+									"value": "true",
+									"description": "Whether one player should be a computer"
+								},
+								{
+									"key": "autoPlay",
+									"value": "true",
+									"description": "Whether the computer should play immediately by itself if it is its turn first"
+								}
+							]
+						},
+						"description": "Start a new NimGame no matter if a current game is already running"
+					},
+					"response": [
+						{
+							"name": "Game was restarted successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/restart?computerOpponent=true&autoPlay=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"restart"
+									],
+									"query": [
+										{
+											"key": "computerOpponent",
+											"value": "true"
+										},
+										{
+											"key": "autoPlay",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Draw matches",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"playerRank\": \"ONE\",\n  \"playerType\": \"HUMAN\",\n  \"drawnMatches\": 1,\n  \"autoPlay\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/draw",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"draw"
+							]
+						},
+						"description": "Make a move for a player an draw matches"
+					},
+					"response": [
+						{
+							"name": "Move was successfull",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"playerRank\": \"ONE\",\n  \"playerType\": \"HUMAN\",\n  \"drawnMatches\": 1,\n  \"autoPlay\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/draw",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"draw"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+						},
+						{
+							"name": "Move-Attempt caused an Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"playerRank\": \"ONE\",\n  \"playerType\": \"HUMAN\",\n  \"drawnMatches\": 1,\n  \"autoPlay\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/draw",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"draw"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"error\": \"The Game must be started before any matches can be drawn\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Current GameState",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/state",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"state"
+							]
+						},
+						"description": "Retreive the current state of the game"
+					},
+					"response": [
+						{
+							"name": "GameState could be read successfully",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/state",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"state"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
