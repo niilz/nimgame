@@ -28,7 +28,7 @@ class MoveMessageTest {
         var expectedAutoPlay = true;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageHuman.class);
         assertEquals(expectedPlayerType, deserializedMoveMessage.getPlayerType());
-        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayerRank());
+        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayer());
         assertEquals(expectedDrawnMatches, deserializedMoveMessage.getDrawnMatches());
         assertEquals(expectedAutoPlay, deserializedMoveMessage.isAutoPlay());
     }
@@ -42,7 +42,7 @@ class MoveMessageTest {
                 "}";
         var expectedPlayerRank = Player.PlayerRank.TWO;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageComputer.class);
-        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayerRank());
+        assertEquals(expectedPlayerRank, deserializedMoveMessage.getPlayer());
     }
 
     @Test
@@ -63,7 +63,7 @@ class MoveMessageTest {
         var expectedPlayerRank = Player.PlayerRank.ONE;
         var deserializedMoveMessageHuman = mapper.readValue(moveMessageHumanJson, MoveMessage.class);
         assertEquals(Player.PlayerType.HUMAN, deserializedMoveMessageHuman.getPlayerType());
-        assertEquals(expectedPlayerRank, deserializedMoveMessageHuman.getPlayerRank());
+        assertEquals(expectedPlayerRank, deserializedMoveMessageHuman.getPlayer());
         assertTrue(deserializedMoveMessageHuman instanceof MoveMessageHuman);
 
         var moveMessageComputerJson = "{" +
@@ -72,7 +72,7 @@ class MoveMessageTest {
                 "}";
         var deserializedMoveMessageComputer = mapper.readValue(moveMessageComputerJson, MoveMessage.class);
         assertEquals(Player.PlayerType.COMPUTER, deserializedMoveMessageComputer.getPlayerType());
-        assertEquals(expectedPlayerRank, deserializedMoveMessageComputer.getPlayerRank());
+        assertEquals(expectedPlayerRank, deserializedMoveMessageComputer.getPlayer());
         assertTrue(deserializedMoveMessageComputer instanceof MoveMessageComputer);
     }
 

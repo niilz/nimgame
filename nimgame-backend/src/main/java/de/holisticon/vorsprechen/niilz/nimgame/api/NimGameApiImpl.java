@@ -75,7 +75,7 @@ public record NimGameApiImpl(GameService gameService) implements NimGameApi {
                 gameService.makeMove(humanMove);
                 maybeMakeAutoMove(humanMove.isAutoPlay());
             } else {
-                gameService.makeComputerMove(move.getPlayerRank());
+                gameService.makeComputerMove(move.getPlayer());
             }
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(new GameResponseError(e.getMessage()));

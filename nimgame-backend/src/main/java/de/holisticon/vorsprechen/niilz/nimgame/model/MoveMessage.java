@@ -18,7 +18,7 @@ import lombok.Getter;
 public abstract class MoveMessage {
 
     @Getter
-    private final Player.PlayerRank playerRank;
+    private final Player.PlayerRank player;
 
     /**
      * Tells if player is a HUMAN or a COMPUTER
@@ -26,9 +26,9 @@ public abstract class MoveMessage {
     public abstract Player.PlayerType getPlayerType();
 
     /**
-     * @param playerRank Tells if player is ONE or TWO
+     * @param player Tells if player is ONE or TWO
      */
-    public MoveMessage(Player.PlayerRank playerRank) {
-        this.playerRank = playerRank;
+    public MoveMessage(Player.PlayerRank player) {
+        this.player = player;
     }
 }

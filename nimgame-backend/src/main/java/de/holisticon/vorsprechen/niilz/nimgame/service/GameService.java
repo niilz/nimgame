@@ -65,14 +65,14 @@ public class GameService {
         if (move instanceof MoveMessageHuman messageHuman) {
             log.info("Move for Human-Player, who has drawn '{}' matches",
                     messageHuman.getDrawnMatches());
-            gameState.makeMove(messageHuman.getDrawnMatches(), move.getPlayerRank());
+            gameState.makeMove(messageHuman.getDrawnMatches(), move.getPlayer());
         } else if (move instanceof MoveMessageComputer) {
             var randomlyDrawnMatches = decideMatchCountForComputer();
             log.info("Move for Computer-Player, who has drawn '{}' matches",
                     randomlyDrawnMatches);
             var computer = gameState.getCurrentPlayer();
             assert(computer.getType() == Player.PlayerType.COMPUTER);
-            gameState.makeMove(randomlyDrawnMatches, move.getPlayerRank());
+            gameState.makeMove(randomlyDrawnMatches, move.getPlayer());
         } else {
             throw new IllegalArgumentException(Error.PLAYER_TYPE_NOT_SUPPORTED);
         }
