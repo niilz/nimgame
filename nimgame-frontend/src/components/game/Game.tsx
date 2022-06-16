@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { GameState } from "../../model/GameState";
-import { GameStateMessage } from "../../model/GameStateMessage";
+import { GameStateMessage as GameStateMessage } from "../../model/GameStateMessage";
 import { Matches } from "../matches/Matches";
 import { Player } from "../player/Player";
 import styles from "./Game.module.css";
@@ -13,10 +13,11 @@ type GameProps = {
 
 export function Game(props: GameProps) {
   const [matches, setMatches] = useState("1");
+  var stateMessage = props.state.message;
   return (
     <div className={styles.Game}>
-      <Matches remainingMatches={props.state.currentMatchCount} />
-      <Player player={props.state.player} playerType={props.state.type} />
+      <Matches remainingMatches={stateMessage.currentMatchCount} />
+      <Player player={stateMessage.player} playerType={stateMessage.type} />
       <label className={styles.Label}>{matches}</label>
       <input
         type="range"
@@ -27,7 +28,7 @@ export function Game(props: GameProps) {
           setMatches(e.target.value)
         }
       />
-      {props.state.gameState == GameState.RUNNING ? (
+      {stateMessage.gameState == GameState.RUNNING ? (
         <button onClick={props.onRestart}>restart</button>
       ) : (
         <button onClick={props.onStart}>start</button>

@@ -16,6 +16,5 @@ export async function makeFetch(
   };
   const stateResponse = await fetch(`${API_BASE_URL}/${path}`, options);
   const res = await stateResponse.json();
-  console.log({ res });
   return res;
 }

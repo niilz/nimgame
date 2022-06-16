@@ -17,12 +17,15 @@ function App() {
   }, []);
 
   const handleStart = async () => {
-    const stateMessage = await makeFetch("start?computerOpponent=true");
+    const stateMessage = await makeFetch("start?computerOpponent=true", "POST");
     setAppState(stateMessage);
   };
 
   const handleRestart = async () => {
-    const stateMessage = await makeFetch("restart?computerOpponent=true");
+    const stateMessage = await makeFetch(
+      "restart?computerOpponent=true",
+      "POST"
+    );
     setAppState(stateMessage);
   };
 
