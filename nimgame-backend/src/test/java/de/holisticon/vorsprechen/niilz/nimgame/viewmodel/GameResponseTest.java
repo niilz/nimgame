@@ -1,10 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.viewmodel;
 
 import de.holisticon.vorsprechen.niilz.nimgame.service.GameState;
-import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponse;
-import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponseError;
-import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameResponseSuccess;
-import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameStateMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

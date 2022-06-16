@@ -15,10 +15,10 @@ public class MoveMessageComputer extends MoveMessage {
     private final Player.PlayerType playerType = Player.PlayerType.COMPUTER;
 
     /**
-     * @param playerRank Tells if player is ONE or TWO
+     * @param player Tells if player is ONE or TWO
      */
     @JsonCreator
-    public MoveMessageComputer(@JsonProperty("playerRank") Player.PlayerRank playerRank) {
-        super(playerRank);
+    public MoveMessageComputer(@JsonProperty("player") Player.PlayerRank player) {
+        super(player);
     }
 }

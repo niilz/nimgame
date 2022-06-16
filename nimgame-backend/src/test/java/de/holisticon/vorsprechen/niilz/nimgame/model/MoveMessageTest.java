@@ -18,7 +18,7 @@ class MoveMessageTest {
     void deserializationIntoMoveMessageHumanWorks() {
         var moveMessageHumanJson = "{" +
                     "\"playerType\": \"HUMAN\"," +
-                    "\"playerRank\": \"ONE\"," +
+                    "\"player\": \"ONE\"," +
                     "\"drawnMatches\": 2," +
                     "\"autoPlay\": true" +
                 "}";
@@ -38,7 +38,7 @@ class MoveMessageTest {
     void deserializationIntoMoveMessageComputerWorks() {
         var moveMessageHumanJson = "{" +
                 "\"playerType\": \"COMPUTER\"," +
-                "\"playerRank\": \"TWO\"" +
+                "\"player\": \"TWO\"" +
                 "}";
         var expectedPlayerRank = Player.PlayerRank.TWO;
         var deserializedMoveMessage = mapper.readValue(moveMessageHumanJson, MoveMessageComputer.class);
@@ -56,7 +56,7 @@ class MoveMessageTest {
     void deserializationIntoMoveMessageSuperType() {
         var moveMessageHumanJson = "{" +
                 "\"playerType\": \"HUMAN\"," +
-                "\"playerRank\": \"ONE\"," +
+                "\"player\": \"ONE\"," +
                 "\"drawnMatches\": 2," +
                 "\"autoPlay\": true" +
                 "}";
@@ -68,7 +68,7 @@ class MoveMessageTest {
 
         var moveMessageComputerJson = "{" +
                 "\"playerType\": \"COMPUTER\"," +
-                "\"playerRank\": \"ONE\"" +
+                "\"player\": \"ONE\"" +
                 "}";
         var deserializedMoveMessageComputer = mapper.readValue(moveMessageComputerJson, MoveMessage.class);
         assertEquals(Player.PlayerType.COMPUTER, deserializedMoveMessageComputer.getPlayerType());

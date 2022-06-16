@@ -23,15 +23,15 @@ public class MoveMessageHuman extends MoveMessage {
     private final boolean autoPlay;
 
     /**
-     * @param playerRank Tells if player is ONE or TWO
+     * @param player Tells if player is ONE or TWO
      * @param drawnMatches The number of drawn matches by the player
      * @param autoPlay Should computer play on its own
      */
     @JsonCreator
-    public MoveMessageHuman(@JsonProperty("playerRank") Player.PlayerRank playerRank,
+    public MoveMessageHuman(@JsonProperty("player") Player.PlayerRank player,
                             @JsonProperty("drawnMatches") int drawnMatches,
                             @JsonProperty("autoPlay") boolean autoPlay) {
-        super(playerRank);
+        super(player);
         this.drawnMatches = drawnMatches;
         this.autoPlay = autoPlay;
     }
