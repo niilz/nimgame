@@ -4,13 +4,19 @@ import { GameStateMessage } from "../../model/GameStateMessage";
 import { Option as Option } from "../autoplayoption/AutoPlayOption";
 import { Matches } from "../matches/Matches";
 import { Player, PlayerType } from "../player/Player";
+import { StartButton } from "../startbutton/StartButton";
 import styles from "./Game.module.css";
 
 type GameProps = {
   gameStateMessage: GameStateMessage;
-  onStart: (autoPlay: boolean, computerOpponent: boolean) => void;
-  onRestart: (autoPlay: boolean, computerOpponent: boolean) => void;
+  onStart: (startConfig: StartConfig) => void;
   makeMove: (drawnMatches?: number, autoPlay?: boolean) => void;
+};
+
+export type StartConfig = {
+  isRestart: boolean;
+  autoPlay: boolean;
+  computerOpponent: boolean;
 };
 
 export function Game(props: GameProps) {
@@ -68,19 +74,12 @@ export function Game(props: GameProps) {
           onChange={setComputerOpponent}
         />
         <Option optionName={"auto-play"} onChange={setAutoPlayAtStart} />
-        {stateMessage.gameState !== GameState.STOPPED ? (
-          <button
-            onClick={() => props.onRestart(autoPlayAtStart, computerOpponent)}
-          >
-            restart
-          </button>
-        ) : (
-          <button
-            onClick={() => props.onStart(autoPlayAtStart, computerOpponent)}
-          >
-            start
-          </button>
-        )}
+        <StartButton
+          onStart={props.onStart}
+          gameState={stateMessage.gameState}
+          autoPlay={autoPlayAtStart}
+          computerOpponent={computerOpponent}
+        />
       </div>
     </div>
   );

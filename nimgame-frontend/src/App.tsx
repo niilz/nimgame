@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 import { makeFetch } from "./service/FetchService";
-import { Game } from "./components/game/Game";
+import { Game, StartConfig } from "./components/game/Game";
 import { GameStateMessage } from "./model/GameStateMessage";
 import { PlayerType } from "./components/player/Player";
 
 function App() {
   const [gameState, setGameState] = useState<null | GameStateMessage>(null);
-  const [autoPlayAtStart, setAutoPlayAtStart] = useState(false);
-  const [computerOpponent, setComputerOpponent] = useState(false);
 
   useEffect(() => {
     const initGame = async () => {
@@ -19,17 +17,11 @@ function App() {
     initGame();
   }, []);
 
-  const handleStart = async () => {
-    const startUrlWithOptions = `start?computerOpponent=${computerOpponent}&autoPlay=${autoPlayAtStart}`;
+  const handleStart = async (config: StartConfig) => {
+    const startUrlWithOptions = `${
+      config.isRestart ? "restart" : "start"
+    }?computerOpponent=${config.computerOpponent}&autoPlay=${config.autoPlay}`;
     const stateMessage = await makeFetch(startUrlWithOptions, "POST");
-    setGameState(stateMessage);
-  };
-
-  const handleRestart = async () => {
-    const stateMessage = await makeFetch(
-      "restart?computerOpponent=true",
-      "POST"
-    );
     setGameState(stateMessage);
   };
 
@@ -70,7 +62,6 @@ function App() {
           <Game
             gameStateMessage={gameState}
             onStart={handleStart}
-            onRestart={handleRestart}
             makeMove={handleMove}
           />
         )}
