@@ -59,9 +59,9 @@ function App() {
 
   return (
     <div className={styles.App}>
-      <header className={styles["App-header"]}>
+      <header className={styles.AppHeader}>
         <h1>The NimGame by</h1>
-        <img src={logo} className={styles["App-logo"]} alt="logo" />
+        <img src={logo} className={styles.AppLogo} alt="logo" />
       </header>
       <main>
         {gameState == null ? (

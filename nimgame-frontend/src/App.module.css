@@ -10,6 +10,10 @@
   font-style: italic;
 }
 
+* {
+  margin: 0;
+}
+
 :root {
   font-size: 10px;
   --primary-color: #2d2d2d;
@@ -19,24 +23,19 @@
 }
 
 .App {
+  background-color: var(--secondary-color);
+  height: 100vh;
+  width: 100vw;
   color: var(--primary-color);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.App-logo {
-  height: 5vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
+.AppHeader {
+  background-color: white;
+  width: 100vw;
+  height: 10vh;
   min-height: 20vh;
   display: flex;
   flex-direction: column;
@@ -45,6 +44,8 @@
   font-size: calc(10px + 2vmin);
 }
 
-.App-link {
-  color: #61dafb;
+.AppLogo {
+  height: 5vmin;
+  padding: 2vmin;
+  pointer-events: none;
 }

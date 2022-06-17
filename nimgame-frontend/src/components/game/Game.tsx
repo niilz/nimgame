@@ -21,7 +21,7 @@ export function Game(props: GameProps) {
   const stateMessage = props.gameStateMessage;
 
   const getStartOptionsHeading = () => {
-    if (props.gameStateMessage.gameState === GameState.STOPPED) {
+    if (stateMessage.gameState === GameState.STOPPED) {
       return "Start";
     }
     return "Restart";
