@@ -9,3 +9,8 @@
 .Label {
   font-size: 2rem;
 }
+
+.ActionArea {
+  display: flex;
+  flex-direction: column;
+}
