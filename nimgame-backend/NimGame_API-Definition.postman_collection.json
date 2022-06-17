@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "abdc5a9d-d329-42c5-9a0c-5eea366fd315",
-		"name": "NimGame - API-Definition - Collection",
+		"_postman_id": "3bcb565a-aca3-4410-9399-88ad4b155315",
+		"name": "NimGame - API-Definition",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -81,46 +81,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
-						},
-						{
-							"name": "Game could not be started",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/api/v1/start?computerOpponent=true&autoPlay=true",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"start"
-									],
-									"query": [
-										{
-											"key": "computerOpponent",
-											"value": "true",
-											"description": "Whether one player should be a computer"
-										},
-										{
-											"key": "autoPlay",
-											"value": "true",
-											"description": "Whether the computer should play immediately by itself if it is its turn first"
-										}
-									]
-								}
-							},
-							"_postman_previewlanguage": "json",
-							"header": null,
-							"cookie": [],
-							"body": "{\n    \"error\": \"Game has already been started\"\n}"
+							"body": "{\n  \"message\": {\n    \"player\": \"ONE\",\n    \"type\": \"HUMAN\",\n    \"currentMatchCount\": 7,\n    \"gameState\": \"RUNNING\"\n  }\n}"
 						}
 					]
 				},
@@ -197,7 +158,46 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+							"body": "{\n  \"message\": {\n    \"player\": \"ONE\",\n    \"type\": \"HUMAN\",\n    \"currentMatchCount\": 7,\n    \"gameState\": \"RUNNING\"\n  }\n}"
+						},
+						{
+							"name": "Game could not be started",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/start?computerOpponent=true&autoPlay=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"start"
+									],
+									"query": [
+										{
+											"key": "computerOpponent",
+											"value": "true",
+											"description": "Whether one player should be a computer"
+										},
+										{
+											"key": "autoPlay",
+											"value": "true",
+											"description": "Whether the computer should play immediately by itself if it is its turn first"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"error\": \"Game has already been started\"\n}"
 						}
 					]
 				},
@@ -274,7 +274,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+							"body": "{\n  \"message\": {\n    \"player\": \"ONE\",\n    \"type\": \"HUMAN\",\n    \"currentMatchCount\": 7,\n    \"gameState\": \"RUNNING\"\n  }\n}"
 						},
 						{
 							"name": "Move-Attempt caused an Error",
@@ -369,7 +369,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"message\": {\n    \"player\": \"TWO\",\n    \"type\": \"COMPUTER\",\n    \"currentMatchCount\": 11,\n    \"gameState\": \"WON\"\n  }\n}"
+							"body": "{\n  \"message\": {\n    \"player\": \"ONE\",\n    \"type\": \"HUMAN\",\n    \"currentMatchCount\": 7,\n    \"gameState\": \"RUNNING\"\n  }\n}"
 						}
 					]
 				}
