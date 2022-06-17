@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GameState } from "../../model/GameState";
 import { GameStateMessage as GameStateMessage } from "../../model/GameStateMessage";
+import { AutoPlayOption } from "../autoplayoption/AutoPlayOption";
 import { Matches } from "../matches/Matches";
 import { Player, PlayerType } from "../player/Player";
 import styles from "./Game.module.css";
@@ -20,6 +21,9 @@ export function Game(props: GameProps) {
   return (
     <div className={styles.Game}>
       <Matches remainingMatches={stateMessage.currentMatchCount} />
+      <div>
+        <AutoPlayOption onAutoPlayChange={setAutoPlay} />
+      </div>
       <Player player={stateMessage.player} playerType={stateMessage.type} />
       {stateMessage.type === PlayerType.HUMAN && (
         <>
@@ -49,16 +53,7 @@ export function Game(props: GameProps) {
           </button>
         )}
         {stateMessage.type === PlayerType.HUMAN && (
-          <div>
-            <label htmlFor="auto-play" className={styles.Label}>
-              autoPlay
-            </label>
-            <input
-              name="auto-play"
-              type="checkbox"
-              onChange={(e) => setAutoPlay(e.target.checked)}
-            />
-          </div>
+          <AutoPlayOption onAutoPlayChange={setAutoPlay} {...styles} />
         )}
         {stateMessage.gameState !== GameState.STOPPED ? (
           <button onClick={props.onRestart}>restart</button>

@@ -8,6 +8,8 @@ import { PlayerType } from "./components/player/Player";
 
 function App() {
   const [gameState, setGameState] = useState<null | GameStateMessage>(null);
+  const [autoPlayAtStart, setAutoPlayAtStart] = useState(false);
+  const [computerOpponent, setComputerOpponent] = useState(false);
 
   useEffect(() => {
     const initGame = async () => {
@@ -18,7 +20,8 @@ function App() {
   }, []);
 
   const handleStart = async () => {
-    const stateMessage = await makeFetch("start?computerOpponent=true", "POST");
+    const startUrlWithOptions = `start?computerOpponent=${computerOpponent}&autoPlay=${autoPlayAtStart}`;
+    const stateMessage = await makeFetch(startUrlWithOptions, "POST");
     setGameState(stateMessage);
   };
 
