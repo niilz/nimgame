@@ -1,0 +1,12 @@
+.Option {
+  width: 100%;
+}
+
+.Checkbox {
+  margin-left: 3%;
+}
+
+.Label {
+  font-size: 2rem;
+  margin-left: 5%;
+}

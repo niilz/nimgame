@@ -1,4 +1,4 @@
-import styles from "./AutoPlayOption.module.css";
+import styles from "./Option.module.css";
 
 type OptionProps = {
   onChange: (isChecked: boolean) => void;
@@ -7,15 +7,16 @@ type OptionProps = {
 
 export function Option(props: OptionProps) {
   return (
-    <div>
-      <label htmlFor={props.optionName} className={styles.Label}>
-        {props.optionName}
-      </label>
+    <div className={styles.Option}>
       <input
+        className={styles.Checkbox}
         name={props.optionName}
         type="checkbox"
         onChange={(e) => props.onChange(e.target.checked)}
       />
+      <label htmlFor={props.optionName} className={styles.Label}>
+        {props.optionName}
+      </label>
     </div>
   );
 }

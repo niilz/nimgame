@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { GameState } from "../../model/GameState";
 import { GameStateMessage } from "../../model/GameStateMessage";
-import { Option as Option } from "../autoplayoption/AutoPlayOption";
 import { Matches } from "../matches/Matches";
+import { Option } from "../option/Option";
 import { Player, PlayerType } from "../player/Player";
 import { StartButton } from "../startbutton/StartButton";
 import styles from "./Game.module.css";
@@ -42,9 +42,9 @@ export function Game(props: GameProps) {
       />
       {stateMessage.type === PlayerType.HUMAN &&
         stateMessage.gameState === GameState.RUNNING && (
-          <>
+          <div className={styles.Matches}>
             <label htmlFor="match-count" className={styles.Label}>
-              {drawnMatches}
+              {`draw ${drawnMatches} match${drawnMatches === "1" ? "" : "es"}`}
             </label>
             <input
               name="match-count"
@@ -56,7 +56,7 @@ export function Game(props: GameProps) {
                 setDrawnMatches(e.target.value)
               }
             />
-          </>
+          </div>
         )}
       <div className={styles.ActionArea}>
         {stateMessage.gameState !== GameState.RUNNING || (
