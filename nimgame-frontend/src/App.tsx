@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 import { makeFetch } from "./service/FetchService";
 import { Game } from "./components/game/Game";
 import { GameStateMessage } from "./model/GameStateMessage";
+import { PlayerType } from "./components/player/Player";
 
 function App() {
-  const [appState, setAppState] = useState<null | GameStateMessage>(null);
+  const [gameState, setGameState] = useState<null | GameStateMessage>(null);
 
   useEffect(() => {
     const initGame = async () => {
       const stateMessage = await makeFetch("state");
-      setAppState(stateMessage);
+      setGameState(stateMessage);
     };
     initGame();
   }, []);
 
   const handleStart = async () => {
     const stateMessage = await makeFetch("start?computerOpponent=true", "POST");
-    setAppState(stateMessage);
+    setGameState(stateMessage);
   };
 
   const handleRestart = async () => {
@@ -26,7 +27,31 @@ function App() {
       "restart?computerOpponent=true",
       "POST"
     );
-    setAppState(stateMessage);
+    setGameState(stateMessage);
+  };
+
+  const handleMove = async (drawnMatches?: number, autoPlay?: boolean) => {
+    if (!gameState) {
+      throw "Move can not be made before game is started";
+    }
+    const moveMessage =
+      gameState.type === PlayerType.COMPUTER
+        ? {
+            player: gameState.player,
+            playerType: gameState.type,
+          }
+        : {
+            player: gameState.player,
+            playerType: gameState.type,
+            drawnMatches,
+            autoPlay,
+          };
+    const stateMessage = await makeFetch(
+      "draw",
+      "POST",
+      JSON.stringify(moveMessage)
+    );
+    setGameState(stateMessage);
   };
 
   return (
@@ -36,13 +61,14 @@ function App() {
         <img src={logo} className={styles["App-logo"]} alt="logo" />
       </header>
       <main>
-        {appState == null ? (
+        {gameState == null ? (
           <h2>"LOADING..."</h2>
         ) : (
           <Game
-            state={appState}
+            gameStateMessage={gameState}
             onStart={handleStart}
             onRestart={handleRestart}
+            makeMove={handleMove}
           />
         )}
       </main>

@@ -16,5 +16,8 @@ export async function makeFetch(
   };
   const stateResponse = await fetch(`${API_BASE_URL}/${path}`, options);
   const res = await stateResponse.json();
-  return res;
+  if (res.error) {
+    throw `An error occured: ${res.error}`;
+  }
+  return res.message;
 }
