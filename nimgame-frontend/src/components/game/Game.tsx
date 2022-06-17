@@ -35,24 +35,29 @@ export function Game(props: GameProps) {
   return (
     <div className={styles.Game}>
       <Matches remainingMatches={stateMessage.currentMatchCount} />
-      <Player player={stateMessage.player} playerType={stateMessage.type} />
-      {stateMessage.type === PlayerType.HUMAN && (
-        <>
-          <label htmlFor="match-count" className={styles.Label}>
-            {drawnMatches}
-          </label>
-          <input
-            name="match-count"
-            type="range"
-            min="1"
-            max="3"
-            value={drawnMatches}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setDrawnMatches(e.target.value)
-            }
-          />
-        </>
-      )}
+      <Player
+        player={stateMessage.player}
+        playerType={stateMessage.type}
+        gameWon={stateMessage.gameState === GameState.WON}
+      />
+      {stateMessage.type === PlayerType.HUMAN &&
+        stateMessage.gameState === GameState.RUNNING && (
+          <>
+            <label htmlFor="match-count" className={styles.Label}>
+              {drawnMatches}
+            </label>
+            <input
+              name="match-count"
+              type="range"
+              min="1"
+              max="3"
+              value={drawnMatches}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setDrawnMatches(e.target.value)
+              }
+            />
+          </>
+        )}
       <div className={styles.ActionArea}>
         {stateMessage.gameState !== GameState.RUNNING || (
           <button
