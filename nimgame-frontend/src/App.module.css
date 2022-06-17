@@ -23,6 +23,7 @@
 }
 
 .App {
+  position: relative;
   background-color: var(--secondary-color);
   height: 100vh;
   width: 100vw;
@@ -30,6 +31,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.GlitterWrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none;
+}
+
+@keyframes glitter-rain-a {
+  from {
+    transform: translateY(-100vh) rotateX(0deg) rotateY(90deb);
+  }
+  to {
+    transform: translateY(100vh) rotateX(180deg) rotateY(360deg);
+  }
+}
+
+@keyframes glitter-rain-b {
+  from {
+    transform: translateY(-100vh) rotateX(90deg) rotateY(0deg);
+  }
+  to {
+    transform: translateY(100vh) rotateX(360deg) rotateY(180deg);
+  }
+}
+
+.GlitterA {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation-duration: 5s;
+  animation-timing-function: ease-out;
+  animation-name: glitter-rain-a;
+  animation-fill-mode: forwards;
+}
+
+.GlitterB {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation-duration: 5s;
+  animation-timing-function: ease-out;
+  animation-name: glitter-rain-b;
+  animation-fill-mode: forwards;
 }
 
 .AppHeader {

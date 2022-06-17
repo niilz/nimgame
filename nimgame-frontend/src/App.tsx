@@ -5,6 +5,7 @@ import { makeFetch } from "./service/FetchService";
 import { Game, StartConfig } from "./components/game/Game";
 import { GameStateMessage } from "./model/GameStateMessage";
 import { PlayerType } from "./components/player/Player";
+import { GameState } from "./model/GameState";
 
 function App() {
   const [gameState, setGameState] = useState<null | GameStateMessage>(null);
@@ -66,6 +67,27 @@ function App() {
           />
         )}
       </main>
+      {gameState && gameState.gameState === GameState.WON && (
+        <div id="glitter-wrapper" className={styles.GlitterWrapper}>
+          {[...new Array(100)].map((_, idx) => (
+            <div
+              id={`${idx}`}
+              key={`${idx}-glitter`}
+              className={
+                Math.random() > 0.5 ? styles.GlitterA : styles.GlitterB
+              }
+              style={{
+                left: Math.random() * window.innerWidth + "px",
+                top: Math.random() * window.innerHeight + "px",
+                backgroundColor:
+                  Math.random() > 0.5
+                    ? "var(--primary-color)"
+                    : "var(--secondary-color)",
+              }}
+            ></div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
