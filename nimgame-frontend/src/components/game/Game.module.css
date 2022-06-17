@@ -6,6 +6,17 @@
   width: 80vw;
 }
 
+.StartOptions {
+  border: 5px dotted var(--secondary-color);
+  border-radius: 10px;
+  padding: 2vmin;
+}
+
+.H3 {
+  margin: 0;
+  font-size: 3rem;
+}
+
 .Label {
   font-size: 2rem;
 }

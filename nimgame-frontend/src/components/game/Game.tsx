@@ -1,29 +1,34 @@
 import { useState } from "react";
 import { GameState } from "../../model/GameState";
 import { GameStateMessage } from "../../model/GameStateMessage";
-import { AutoPlayOption } from "../autoplayoption/AutoPlayOption";
+import { Option as Option } from "../autoplayoption/AutoPlayOption";
 import { Matches } from "../matches/Matches";
 import { Player, PlayerType } from "../player/Player";
 import styles from "./Game.module.css";
 
 type GameProps = {
   gameStateMessage: GameStateMessage;
-  onStart: () => void;
-  onRestart: () => void;
+  onStart: (autoPlay: boolean, computerOpponent: boolean) => void;
+  onRestart: (autoPlay: boolean, computerOpponent: boolean) => void;
   makeMove: (drawnMatches?: number, autoPlay?: boolean) => void;
 };
 
 export function Game(props: GameProps) {
   const [drawnMatches, setDrawnMatches] = useState("1");
   const [autoPlay, setAutoPlay] = useState<undefined | boolean>(undefined);
+  const [autoPlayAtStart, setAutoPlayAtStart] = useState(false);
+  const [computerOpponent, setComputerOpponent] = useState(false);
   const stateMessage = props.gameStateMessage;
 
+  const getStartOptionsHeading = () => {
+    if (props.gameStateMessage.gameState === GameState.STOPPED) {
+      return "Start";
+    }
+    return "Restart";
+  };
   return (
     <div className={styles.Game}>
       <Matches remainingMatches={stateMessage.currentMatchCount} />
-      <div>
-        <AutoPlayOption onAutoPlayChange={setAutoPlay} />
-      </div>
       <Player player={stateMessage.player} playerType={stateMessage.type} />
       {stateMessage.type === PlayerType.HUMAN && (
         <>
@@ -53,12 +58,28 @@ export function Game(props: GameProps) {
           </button>
         )}
         {stateMessage.type === PlayerType.HUMAN && (
-          <AutoPlayOption onAutoPlayChange={setAutoPlay} {...styles} />
+          <Option optionName="auto-play" onChange={setAutoPlay} />
         )}
+      </div>
+      <div className={styles.StartOptions}>
+        <h3 className={styles.H3}>{`${getStartOptionsHeading()} Options`}</h3>
+        <Option
+          optionName={"computer-opponent"}
+          onChange={setComputerOpponent}
+        />
+        <Option optionName={"auto-play"} onChange={setAutoPlayAtStart} />
         {stateMessage.gameState !== GameState.STOPPED ? (
-          <button onClick={props.onRestart}>restart</button>
+          <button
+            onClick={() => props.onRestart(autoPlayAtStart, computerOpponent)}
+          >
+            restart
+          </button>
         ) : (
-          <button onClick={props.onStart}>start</button>
+          <button
+            onClick={() => props.onStart(autoPlayAtStart, computerOpponent)}
+          >
+            start
+          </button>
         )}
       </div>
     </div>
