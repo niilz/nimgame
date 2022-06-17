@@ -58,8 +58,8 @@ export function Game(props: GameProps) {
             />
           </div>
         )}
-      <div className={styles.ActionArea}>
-        {stateMessage.gameState !== GameState.RUNNING || (
+      {stateMessage.gameState !== GameState.RUNNING || (
+        <div className={styles.ActionArea}>
           <button
             onClick={() =>
               props.makeMove(Number.parseInt(drawnMatches), autoPlay)
@@ -67,11 +67,11 @@ export function Game(props: GameProps) {
           >
             draw
           </button>
-        )}
-        {stateMessage.type === PlayerType.HUMAN && (
-          <Option optionName="auto-play" onChange={setAutoPlay} />
-        )}
-      </div>
+          {stateMessage.type === PlayerType.HUMAN && (
+            <Option optionName="auto-play" onChange={setAutoPlay} />
+          )}
+        </div>
+      )}
       <div className={styles.StartOptions}>
         <h3 className={styles.H3}>{`${getStartOptionsHeading()} Options`}</h3>
         <Option
