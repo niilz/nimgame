@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GameState } from "../../model/GameState";
-import { GameStateMessage as GameStateMessage } from "../../model/GameStateMessage";
+import { GameStateMessage } from "../../model/GameStateMessage";
 import { AutoPlayOption } from "../autoplayoption/AutoPlayOption";
 import { Matches } from "../matches/Matches";
 import { Player, PlayerType } from "../player/Player";
