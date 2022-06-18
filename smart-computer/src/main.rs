@@ -1,4 +1,6 @@
-use std::{borrow::Borrow, cell::RefCell, fmt::Formatter, ptr::NonNull, rc::Rc};
+use std::{
+    borrow::Borrow, cell::RefCell, collections::HashMap, fmt::Formatter, ptr::NonNull, rc::Rc,
+};
 
 const TOTAL_MATCH_COUNT: u8 = 13;
 
@@ -8,7 +10,7 @@ enum Player {
     TWO,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 struct Game {
     winner: Player,
     moves: Vec<(Player, u8)>,
@@ -42,31 +44,48 @@ fn main() {
 
     println!("The tree: {move_tree:#?}");
     println!();
-    println!("Games: {games:?}");
 
-    // Check in which ones Player ONE won (was not last);
-
-    let games_won_by_one = games.iter().filter(|game| game.winner == Player::ONE);
-    for game in games_won_by_one {
+    println!("All Games");
+    for game in &games {
         println!("{:?}", game.moves);
     }
+    println!();
+
+    // Check in which ones Player ONE won (was not last);
+    let games_won_by_one: Vec<&Game> = (&games[..])
+        .iter()
+        .filter(|game| game.winner == Player::ONE)
+        .collect();
+    for game in &games_won_by_one[..] {
+        println!("{:?}", game.moves);
+    }
+
+    println!(
+        "all-games: {}, games-won-by-ONE: {}",
+        games.len(),
+        games_won_by_one.len()
+    );
+
+    // Determine which positions have the highest chance
+    let mut weights = HashMap::new();
+    for game in games_won_by_one {
+        *weights.entry(game.moves[0].1).or_insert(0) += 1;
+    }
+
+    println!("Weights");
+    println!("{weights:#?}");
 }
 
 fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCell<MoveNode>>) {
     // This is hefty
     let node = <Rc<RefCell<MoveNode>> as Borrow<RefCell<MoveNode>>>::borrow(last_node);
 
-    // Swap the Players and make all moves (1, 2, 3)
-    let player = if node.borrow().player == Player::ONE {
-        Player::TWO
-    } else {
-        Player::ONE
-    };
-
+    let current_player = node.borrow().player;
+    let next_player = swap_player(current_player);
     if node.borrow().remaining == 0 {
         // No more matches: last_node.player looses (last_node.player drew the last match)
         let won_game = Game {
-            winner: player,
+            winner: next_player,
             moves: moves.to_vec(),
         };
         games.push(won_game);
@@ -74,25 +93,43 @@ fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCe
     }
     let remaining_matches = node.borrow().remaining;
     // Take one match
-    let one_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 1, player)));
-    last_node.borrow_mut().one = Some(Rc::clone(&one_node));
     let mut moves_one = moves.to_vec();
-    moves_one.push((player, 1));
+    moves_one.push((current_player, 1));
+    let one_node = Rc::new(RefCell::new(MoveNode::new(
+        remaining_matches - 1,
+        next_player,
+    )));
+    last_node.borrow_mut().one = Some(Rc::clone(&one_node));
     get_games(games, &moves_one[..], &one_node);
     // Take two matches
     if remaining_matches > 1 {
-        let two_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 2, player)));
-        last_node.borrow_mut().two = Some(Rc::clone(&two_node));
         let mut moves_two = moves.to_vec();
-        moves_two.push((player, 2));
+        moves_two.push((current_player, 2));
+        let two_node = Rc::new(RefCell::new(MoveNode::new(
+            remaining_matches - 2,
+            next_player,
+        )));
+        last_node.borrow_mut().two = Some(Rc::clone(&two_node));
         get_games(games, &moves_two[..], &two_node);
     }
     // Take three matches
     if remaining_matches > 2 {
-        let three_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 3, player)));
-        last_node.borrow_mut().three = Some(Rc::clone(&three_node));
         let mut moves_three = moves.to_vec();
-        moves_three.push((player, 3));
+        moves_three.push((current_player, 3));
+        let three_node = Rc::new(RefCell::new(MoveNode::new(
+            remaining_matches - 3,
+            next_player,
+        )));
+        last_node.borrow_mut().three = Some(Rc::clone(&three_node));
         get_games(games, &moves_three[..], &three_node);
+    }
+}
+
+fn swap_player(player: Player) -> Player {
+    // Swap the Players and make all moves (1, 2, 3)
+    if player == Player::ONE {
+        Player::TWO
+    } else {
+        Player::ONE
     }
 }
