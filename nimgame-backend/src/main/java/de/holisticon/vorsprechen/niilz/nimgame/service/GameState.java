@@ -90,9 +90,10 @@ public class GameState {
         if (remainingMatches == 0) {
             state = State.WON;
             log.info(Constants.Message.GAME_FINISHED);
-        } else {
-            swapPlayers();
         }
+        // Even swap players after game is won, bacause the one that pics the last match Looses
+        // Meaning the next player, who's turn it would be, wins
+        swapPlayers();
     }
 
     /**
