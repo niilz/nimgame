@@ -1,10 +1,8 @@
-use std::{
-    borrow::Borrow, cell::RefCell, collections::HashMap, fmt::Formatter, ptr::NonNull, rc::Rc,
-};
+use std::{borrow::Borrow, cell::RefCell, collections::HashMap, rc::Rc};
 
 const TOTAL_MATCH_COUNT: u8 = 13;
 
-#[derive(PartialEq, Eq, Debug, Clone, Copy)]
+#[derive(PartialEq, Eq, Debug, Clone, Copy, Hash)]
 enum Player {
     ONE,
     TWO,
@@ -13,7 +11,14 @@ enum Player {
 #[derive(Debug, PartialEq, Eq)]
 struct Game {
     winner: Player,
-    moves: Vec<(Player, u8)>,
+    moves: Vec<Condition>,
+}
+
+#[derive(Debug, PartialEq, Clone, Eq, Hash)]
+struct Condition {
+    player: Player,
+    drawn: u8,
+    remaining: u8,
 }
 
 #[derive(Debug, Clone)]
@@ -69,14 +74,16 @@ fn main() {
     // Determine which positions have the highest chance
     let mut weights = HashMap::new();
     for game in games_won_by_one {
-        *weights.entry(game.moves[0].1).or_insert(0) += 1;
+        for condition in game.moves.iter().step_by(2) {
+            *weights.entry(condition).or_insert(0) += 1;
+        }
     }
 
     println!("Weights");
     println!("{weights:#?}");
 }
 
-fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCell<MoveNode>>) {
+fn get_games(games: &mut Vec<Game>, moves: &[Condition], last_node: &Rc<RefCell<MoveNode>>) {
     // This is hefty
     let node = <Rc<RefCell<MoveNode>> as Borrow<RefCell<MoveNode>>>::borrow(last_node);
 
@@ -94,7 +101,11 @@ fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCe
     let remaining_matches = node.borrow().remaining;
     // Take one match
     let mut moves_one = moves.to_vec();
-    moves_one.push((current_player, 1));
+    moves_one.push(Condition {
+        player: current_player,
+        drawn: 1,
+        remaining: node.borrow().remaining,
+    });
     let one_node = Rc::new(RefCell::new(MoveNode::new(
         remaining_matches - 1,
         next_player,
@@ -104,7 +115,11 @@ fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCe
     // Take two matches
     if remaining_matches > 1 {
         let mut moves_two = moves.to_vec();
-        moves_two.push((current_player, 2));
+        moves_two.push(Condition {
+            player: current_player,
+            drawn: 2,
+            remaining: node.borrow().remaining,
+        });
         let two_node = Rc::new(RefCell::new(MoveNode::new(
             remaining_matches - 2,
             next_player,
@@ -115,7 +130,11 @@ fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCe
     // Take three matches
     if remaining_matches > 2 {
         let mut moves_three = moves.to_vec();
-        moves_three.push((current_player, 3));
+        moves_three.push(Condition {
+            player: current_player,
+            drawn: 3,
+            remaining: node.borrow().remaining,
+        });
         let three_node = Rc::new(RefCell::new(MoveNode::new(
             remaining_matches - 3,
             next_player,
