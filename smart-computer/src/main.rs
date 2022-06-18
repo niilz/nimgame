@@ -8,6 +8,12 @@ enum Player {
     TWO,
 }
 
+#[derive(Debug)]
+struct Game {
+    winner: Player,
+    moves: Vec<(Player, u8)>,
+}
+
 #[derive(Debug, Clone)]
 struct MoveNode {
     remaining: u8,
@@ -29,35 +35,64 @@ impl MoveNode {
 }
 
 fn main() {
-    let mut move_tree = Rc::new(RefCell::new(MoveNode::new(5, Player::ONE)));
-    create_tree(&mut move_tree);
+    let mut move_tree = Rc::new(RefCell::new(MoveNode::new(13, Player::ONE)));
+    // Collect all possible Moves
+    let mut games = vec![];
+    get_games(&mut games, &[], &mut move_tree);
 
     println!("The tree: {move_tree:#?}");
+    println!();
+    println!("Games: {games:?}");
+
+    // Check in which ones Player ONE won (was not last);
+
+    let games_won_by_one = games.iter().filter(|game| game.winner == Player::ONE);
+    for game in games_won_by_one {
+        println!("{:?}", game.moves);
+    }
 }
 
-fn create_tree(last_node: &Rc<RefCell<MoveNode>>) {
+fn get_games(games: &mut Vec<Game>, moves: &[(Player, u8)], last_node: &Rc<RefCell<MoveNode>>) {
     // This is hefty
     let node = <Rc<RefCell<MoveNode>> as Borrow<RefCell<MoveNode>>>::borrow(last_node);
-    if node.borrow().remaining == 0 {
-        return;
-    }
+
+    // Swap the Players and make all moves (1, 2, 3)
     let player = if node.borrow().player == Player::ONE {
         Player::TWO
     } else {
         Player::ONE
     };
-    let remaining_matches = node.borrow().remaining - 1;
-    let one_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches, player)));
-    last_node.borrow_mut().one = Some(Rc::clone(&one_node));
-    create_tree(&one_node);
-    if remaining_matches > 1 {
-        let two_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 1, player)));
-        last_node.borrow_mut().two = Some(Rc::clone(&two_node));
-        create_tree(&two_node);
+
+    if node.borrow().remaining == 0 {
+        // No more matches: last_node.player looses (last_node.player drew the last match)
+        let won_game = Game {
+            winner: player,
+            moves: moves.to_vec(),
+        };
+        games.push(won_game);
+        return;
     }
+    let remaining_matches = node.borrow().remaining;
+    // Take one match
+    let one_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 1, player)));
+    last_node.borrow_mut().one = Some(Rc::clone(&one_node));
+    let mut moves_one = moves.to_vec();
+    moves_one.push((player, 1));
+    get_games(games, &moves_one[..], &one_node);
+    // Take two matches
+    if remaining_matches > 1 {
+        let two_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 2, player)));
+        last_node.borrow_mut().two = Some(Rc::clone(&two_node));
+        let mut moves_two = moves.to_vec();
+        moves_two.push((player, 2));
+        get_games(games, &moves_two[..], &two_node);
+    }
+    // Take three matches
     if remaining_matches > 2 {
-        let three_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 2, player)));
+        let three_node = Rc::new(RefCell::new(MoveNode::new(remaining_matches - 3, player)));
         last_node.borrow_mut().three = Some(Rc::clone(&three_node));
-        create_tree(&three_node);
+        let mut moves_three = moves.to_vec();
+        moves_three.push((player, 3));
+        get_games(games, &moves_three[..], &three_node);
     }
 }
