@@ -22,14 +22,14 @@ struct Condition {
 }
 
 #[derive(Debug, Clone)]
-struct MoveTree {
+struct MoveCollector {
     player: Player,
     games: Vec<Game>,
     counter: u32,
 }
-impl MoveTree {
+impl MoveCollector {
     fn new() -> Self {
-        MoveTree {
+        MoveCollector {
             games: Vec::new(),
             player: Player::ONE,
             counter: 0,
@@ -48,7 +48,7 @@ impl MoveTree {
             return;
         }
         self.player = next_player;
-        // Take one match
+        // Take one 1, 2 and 3 matches at this point in the game
         for drawn in 1..=3 {
             if drawn <= remaining_matches {
                 self.counter += 1;
@@ -65,7 +65,7 @@ impl MoveTree {
 }
 
 fn main() {
-    let mut move_tree = MoveTree::new();
+    let mut move_tree = MoveCollector::new();
     let mut moves = Vec::new();
     move_tree.collect_all_games(&mut moves, TOTAL_MATCH_COUNT);
 
