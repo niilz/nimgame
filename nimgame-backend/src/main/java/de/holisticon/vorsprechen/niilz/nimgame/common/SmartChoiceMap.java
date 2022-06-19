@@ -21,6 +21,7 @@ public abstract class SmartChoiceMap {
     }
 
     public static int getSmarchChoiceForRemaining(@Max(13) @Min(1) int remainingMatches) {
-        return smartChoiceForRemaining.get(remainingMatches);
+        var smartChoiceAttempt = smartChoiceForRemaining.get(remainingMatches);
+        return smartChoiceAttempt == null ? 1 : smartChoiceAttempt;
     }
 }
