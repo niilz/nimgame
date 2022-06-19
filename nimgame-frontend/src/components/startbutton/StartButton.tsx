@@ -6,6 +6,7 @@ type StartButtonProps = {
   gameState: GameState;
   autoPlay: boolean;
   computerOpponent: boolean;
+  playSmart: boolean;
 };
 
 export function StartButton(props: StartButtonProps) {
@@ -13,6 +14,7 @@ export function StartButton(props: StartButtonProps) {
     isRestart: props.gameState !== GameState.STOPPED,
     autoPlay: props.autoPlay,
     computerOpponent: props.computerOpponent,
+    playSmart: props.playSmart,
   };
   return (
     <button onClick={() => props.onStart(startConfig)}>

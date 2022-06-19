@@ -17,6 +17,7 @@ export type StartConfig = {
   isRestart: boolean;
   autoPlay: boolean;
   computerOpponent: boolean;
+  playSmart: boolean;
 };
 
 export function Game(props: GameProps) {
@@ -24,6 +25,7 @@ export function Game(props: GameProps) {
   const [autoPlay, setAutoPlay] = useState<undefined | boolean>(undefined);
   const [autoPlayAtStart, setAutoPlayAtStart] = useState(false);
   const [computerOpponent, setComputerOpponent] = useState(false);
+  const [playSmart, setPlaySmart] = useState(false);
   const stateMessage = props.gameStateMessage;
 
   const getStartOptionsHeading = () => {
@@ -79,11 +81,13 @@ export function Game(props: GameProps) {
           onChange={setComputerOpponent}
         />
         <Option optionName={"auto-play"} onChange={setAutoPlayAtStart} />
+        <Option optionName={"play-smart"} onChange={setPlaySmart} />
         <StartButton
           onStart={props.onStart}
           gameState={stateMessage.gameState}
           autoPlay={autoPlayAtStart}
           computerOpponent={computerOpponent}
+          playSmart={playSmart}
         />
       </div>
     </div>

@@ -21,7 +21,9 @@ function App() {
   const handleStart = async (config: StartConfig) => {
     const startUrlWithOptions = `${
       config.isRestart ? "restart" : "start"
-    }?computerOpponent=${config.computerOpponent}&autoPlay=${config.autoPlay}`;
+    }?computerOpponent=${config.computerOpponent}&autoPlay=${
+      config.autoPlay
+    }&playSmart=${config.playSmart}`;
     const stateMessage = await makeFetch(startUrlWithOptions, "POST");
     setGameState(stateMessage);
   };
