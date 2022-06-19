@@ -29,13 +29,13 @@ class GameServiceTest {
     @Test
     void gameIsStartedAfterStartingTheGame() {
         assertFalse(gameService.isGameStarted());
-        gameService.startGame(true);
+        gameService.startGame(true, false);
         assertTrue(gameService.isGameStarted());
     }
 
     @Test
     void resettingTheGameReturnsToInitalState() {
-        gameService.startGame(true);
+        gameService.startGame(true, false);
         assertTrue(gameService.isGameStarted());
         gameService.resetGame();
         assertFalse(gameService.isGameStarted());
@@ -43,7 +43,7 @@ class GameServiceTest {
 
     @Test
     void restartingTheGameCreatesNewInitialState() {
-        gameService.startGame(false);
+        gameService.startGame(false, false);
         assertTrue(gameService.isGameStarted());
         var currentPlayersRank = gameService.getCurrentPlayersRank();
         var matchesToDraw = 3;
@@ -53,14 +53,14 @@ class GameServiceTest {
         assertEquals(GameState.INITIAL_MATCH_COUNT - matchesToDraw, gameService.getRemainingMatches());
 
         // Restart should bring back a new started game
-        gameService.restartGame(false);
+        gameService.restartGame(false, false);
         assertTrue(gameService.isGameStarted());
         assertEquals(GameState.INITIAL_MATCH_COUNT, gameService.getRemainingMatches());
     }
 
     @Test
     void computerMustNotBePlayAsHuman() {
-        gameService.startGame(false);
+        gameService.startGame(false, false);
         // Both Players are HUMAN
         var currentPlayersRank = gameService.getCurrentPlayersRank();
         var moveMessageComputer = new MoveMessageComputer(currentPlayersRank);
@@ -70,7 +70,7 @@ class GameServiceTest {
     @Test
     void autoMoveIsOnlyAllowedWhenApproriate() {
         // Version A: Human vs Human
-        gameService.startGame(false);
+        gameService.startGame(false, false);
         // Both players are Human so setting automove to true has no effect
         assertFalse(gameService.shouldMakeAutoMove(true));
         var currentPlayersRankA = gameService.getCurrentPlayersRank();
@@ -80,7 +80,7 @@ class GameServiceTest {
         assertFalse(gameService.shouldMakeAutoMove(true));
 
         // Version B: Human vs Computer
-        gameService.restartGame(true);
+        gameService.restartGame(true, false);
         if (gameService.isCurrentPlayerComputer()) {
             // If the user would specify 'no-auto-play' aka autoPlay==false
             assertFalse(gameService.shouldMakeAutoMove(false));
@@ -107,7 +107,7 @@ class GameServiceTest {
         }
 
         // Version C: Human vs Computer and Game has ended
-        gameService.restartGame(true);
+        gameService.restartGame(true, false);
         var currentRank = gameService.getCurrentPlayersRank();
         var nextRank = currentRank == Player.PlayerRank.ONE
                 ? Player.PlayerRank.TWO

@@ -40,12 +40,13 @@ public record NimGameApiImpl(GameService gameService) implements NimGameApi {
     @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> initGame(
             @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean playSmart,
             @RequestParam(required = false) boolean autoPlay) {
-        if (gameService.isGameStarted()) {
+            if (gameService.isGameStarted()) {
             var error = new GameResponseError(Constants.Error.GAME_ALREADY_STARTED);
             return ResponseEntity.badRequest().body(error);
         }
-        gameService.startGame(computerOpponent);
+        gameService.startGame(computerOpponent, playSmart);
         maybeMakeAutoMove(autoPlay);
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);
@@ -55,8 +56,9 @@ public record NimGameApiImpl(GameService gameService) implements NimGameApi {
     @PostMapping(value = "/restart", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameResponse> restart(
             @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean playSmart,
             @RequestParam(required = false) boolean autoPlay) {
-        gameService.restartGame(computerOpponent);
+        gameService.restartGame(computerOpponent, playSmart);
         maybeMakeAutoMove(autoPlay);
         var message = new GameResponseSuccess(gameService.getGameStateMessage());
         return ResponseEntity.ok(message);

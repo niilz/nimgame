@@ -37,10 +37,12 @@ public interface NimGameApi {
     })
     @Parameters(value = {
             @Parameter(name = "computerOpponent", description = "Whether one player should be a computer"),
+            @Parameter(name = "playSmart", description = "Whether computer should play smart"),
             @Parameter(name = "autoPlay", description = "Whether the computer should play immediately by itself if it is its turn first")
     })
     ResponseEntity<GameResponse> initGame(
             @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean playSmart,
             @RequestParam(required = false) boolean autoPlay);
 
     @Operation(summary = "Restart the game", description = "Start a new NimGame no matter if a current game is already running", tags = {"nimgame"})
@@ -49,10 +51,12 @@ public interface NimGameApi {
     }))
     @Parameters(value = {
             @Parameter(name = "computerOpponent", description = "Whether one player should be a computer"),
+            @Parameter(name = "playSmart", description = "Whether the computer should play smart"),
             @Parameter(name = "autoPlay", description = "Whether the computer should play immediately by itself if it is its turn first")
     })
     ResponseEntity<GameResponse> restart(
             @RequestParam(required = false) boolean computerOpponent,
+            @RequestParam(required = false) boolean playSmart,
             @RequestParam(required = false) boolean autoPlay);
 
     @Operation(summary = "Draw matches", description = "Make a move for a player an draw matches", tags = {"nimgame"})

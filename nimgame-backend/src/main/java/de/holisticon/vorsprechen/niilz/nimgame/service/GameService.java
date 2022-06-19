@@ -1,6 +1,7 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
 import de.holisticon.vorsprechen.niilz.nimgame.common.Constants.Error;
+import de.holisticon.vorsprechen.niilz.nimgame.common.SmartChoiceMap;
 import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageComputer;
@@ -31,9 +32,9 @@ public class GameService {
     public boolean isGameStarted() {
         return gameState != null && gameState.getState() == GameState.State.RUNNING;
     }
-    public void startGame(boolean computerOpponent) {
+    public void startGame(boolean computerOpponent, boolean playSmart) {
         try {
-            gameState.startGame(computerOpponent);
+            gameState.startGame(computerOpponent, playSmart);
         } catch (IllegalStateException e) {
             log.error(Error.ILLEGAL_GAME_STATE, e);
         }
@@ -43,9 +44,9 @@ public class GameService {
         gameState = new GameState();
     }
 
-    public void restartGame(boolean computerOpponent) {
+    public void restartGame(boolean computerOpponent, boolean playSmart) {
         resetGame();
-        startGame(computerOpponent);
+        startGame(computerOpponent, playSmart);
     }
 
     /**
@@ -67,12 +68,12 @@ public class GameService {
                     messageHuman.getDrawnMatches());
             gameState.makeMove(messageHuman.getDrawnMatches(), move.getPlayer());
         } else if (move instanceof MoveMessageComputer) {
-            var randomlyDrawnMatches = decideMatchCountForComputer();
-            log.info("Move for Computer-Player, who has drawn '{}' matches",
-                    randomlyDrawnMatches);
             var computer = gameState.getCurrentPlayer();
             assert(computer.getType() == Player.PlayerType.COMPUTER);
-            gameState.makeMove(randomlyDrawnMatches, move.getPlayer());
+            var computerMatches = decideMatchCountForComputer();
+                    log.info("Move for Computer-Player, who has drawn '{}' matches",
+                            computerMatches);
+            gameState.makeMove(computerMatches, move.getPlayer());
         } else {
             throw new IllegalArgumentException(Error.PLAYER_TYPE_NOT_SUPPORTED);
         }
@@ -90,10 +91,14 @@ public class GameService {
      * by the amount of remaining matches in the game
      */
     public int decideMatchCountForComputer() {
-        var maxMatchesToDraw = Math.min(MAX_MATCH_COUNT_TO_DRAW, gameState.getRemainingMatches());
-        var matchCount = random.nextInt(maxMatchesToDraw) + RANDOM_OFFSET;
-        assert(matchCount <= gameState.getRemainingMatches());
-        return matchCount;
+        if (gameState.isPlaySmart()) {
+            return SmartChoiceMap.getSmarchChoiceForRemaining(getRemainingMatches());
+        } else {
+            var maxMatchesToDraw = Math.min(MAX_MATCH_COUNT_TO_DRAW, gameState.getRemainingMatches());
+            var matchCount = random.nextInt(maxMatchesToDraw) + RANDOM_OFFSET;
+            assert(matchCount <= gameState.getRemainingMatches());
+            return matchCount;
+        }
     }
 
     /**

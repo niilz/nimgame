@@ -28,6 +28,9 @@ public class GameState {
     @Getter
     private Player nextPlayer;
 
+    @Getter
+    boolean playSmart;
+
     /**
      * Constructs a new GameState in the {@link State#STOPPED} state
      */
@@ -41,13 +44,14 @@ public class GameState {
      * Starts a new NimGame without a computer opponent (two human players)
      */
     public void startGame() {
-        startGame(false);
+        startGame(false, false);
     }
 
     /**
      * @param playAgainstComputer Wheter one player should be a computer
      */
-    public void startGame(boolean playAgainstComputer) {
+    public void startGame(boolean playAgainstComputer, boolean playSmart) {
+        this.playSmart = playSmart;
         if (this.state == State.RUNNING) {
             throw new IllegalArgumentException(Constants.Error.GAME_ALREADY_STARTED);
         }

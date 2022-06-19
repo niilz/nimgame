@@ -1,7 +1,6 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
 import de.holisticon.vorsprechen.niilz.nimgame.model.Player;
-import de.holisticon.vorsprechen.niilz.nimgame.service.GameState;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +42,7 @@ class GameStateTest {
     @Test
     void ifComputerOpponentIsEnabledOnePlayerMustBeComputer() {
         var gameState = new GameState();
-        gameState.startGame(true);
+        gameState.startGame(true, false);
         if (gameState.getCurrentPlayer().getType() == Player.PlayerType.HUMAN) {
             assertEquals(Player.PlayerType.COMPUTER, gameState.getNextPlayer().getType());
         } else {
