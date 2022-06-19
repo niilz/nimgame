@@ -39,17 +39,18 @@ impl MoveCollector {
         let current_player = self.player;
         let next_player = swap_player(current_player);
         if remaining_matches == 0 {
-            // No more matches: last_node.player looses (last_node.player drew the last match)
+            // No more matches: last player looses (last player drew the last match)
+            // So th player tha would play now (current_player) wins
             let finished_game = Game {
-                winner: next_player,
+                winner: current_player,
                 moves: moves.to_vec(),
             };
             self.games.push(finished_game);
             return;
         }
-        self.player = next_player;
-        // Take one 1, 2 and 3 matches at this point in the game
+        // Draw one 1, 2 and 3 matches at this point in the game
         for drawn in 1..=3 {
+            self.player = next_player;
             if drawn <= remaining_matches {
                 self.counter += 1;
                 let mut this_moves = moves.to_vec();
@@ -62,41 +63,70 @@ impl MoveCollector {
             }
         }
     }
+
+    fn collect_won_games(&self, player: Player) -> Vec<&Game> {
+        // Check in which ones Player ONE won (was not last);
+        self.games
+            .iter()
+            .filter(|game| game.winner == player)
+            .collect()
+    }
 }
 
 fn main() {
-    let mut move_tree = MoveCollector::new();
+    let mut move_collector = MoveCollector::new();
     let mut moves = Vec::new();
-    move_tree.collect_all_games(&mut moves, TOTAL_MATCH_COUNT);
+    move_collector.collect_all_games(&mut moves, TOTAL_MATCH_COUNT);
 
-    let games = move_tree.games;
-    //println!("{games:?}");
-
-    // Check in which ones Player ONE won (was not last);
-    let games_won_by_one: Vec<&Game> = (&games[..])
-        .iter()
-        .filter(|game| game.winner == Player::ONE)
-        .collect();
-    for game in &games_won_by_one[..] {
-        println!("{:?}", game.moves);
-    }
+    let games_won_by_one = move_collector.collect_won_games(Player::ONE);
+    let games_won_by_two = move_collector.collect_won_games(Player::TWO);
 
     println!(
-        "all-games: {}, games-won-by-ONE: {}",
-        games.len(),
-        games_won_by_one.len()
+        "all-games: {}, games-won-by-ONE: {}, games-won-by-two: {}",
+        move_collector.games.len(),
+        games_won_by_one.len(),
+        games_won_by_two.len()
     );
 
-    // Determine which positions have the highest chance
-    let mut weights = HashMap::new();
+    // Determine which positions have the highest chance ONE
+    let mut weights_one = HashMap::new();
     for game in games_won_by_one {
+        println!("{game:#?}");
         for condition in game.moves.iter().step_by(2) {
-            *weights.entry(condition).or_insert(0) += 1;
+            *weights_one.entry(condition).or_insert(0) += 1;
+        }
+    }
+    // Determine which positions have the highest chance for player TWO
+    let mut weights_two = HashMap::new();
+    for game in games_won_by_two {
+        println!("{game:#?}");
+        for condition in game.moves[1..].iter().step_by(2) {
+            *weights_two.entry(condition).or_insert(0) += 1;
         }
     }
 
-    println!("Weights");
-    println!("{weights:#?}");
+    println!("Weights-ONE");
+    println!("{weights_one:#?}");
+    println!();
+    println!("Weights-TWO");
+    println!("{weights_two:#?}");
+
+    let best_draw_when_5_remain_one: Vec<_> = weights_one
+        .iter()
+        .filter(|(condition, weight)| condition.remaining == 10)
+        .collect();
+
+    println!("Chances for 5 remaing ONE");
+    println!("{best_draw_when_5_remain_one:#?}");
+    println!();
+
+    let best_draw_when_5_remain_two: Vec<_> = weights_two
+        .iter()
+        .filter(|(condition, weight)| condition.remaining == 10)
+        .collect();
+
+    println!("Chances for 5 remaing TWO");
+    println!("{best_draw_when_5_remain_two:#?}");
 }
 
 fn swap_player(player: Player) -> Player {
