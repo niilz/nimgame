@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 
 const TOTAL_MATCH_COUNT: u8 = 13;
 
@@ -105,28 +105,40 @@ fn main() {
         }
     }
 
-    println!("Weights-ONE");
-    println!("{weights_one:#?}");
+    // Extract the best choices per situation (remaining_matches, when this player has its move)
+    let mut best_conditions_one = BTreeMap::new();
+    let mut best_conditions_two = BTreeMap::new();
+    for remaining_matches in 1..=13 {
+        // Collect best_draw options for Player ONE
+        if let Some((best_draw, _weight)) = weights_one
+            .iter()
+            .filter(|(condition, _weight)| condition.remaining == remaining_matches)
+            .map(|(condition, weight)| ((condition.drawn, weight)))
+            .map(|(drawn, weight)| {
+                println!("remaining: {remaining_matches}, drawn: {drawn}, weight: {weight}");
+                (drawn, weight)
+            })
+            .max_by(|(_draw_a, weight_a), (_draw_b, weight_b)| weight_a.cmp(weight_b))
+        {
+            best_conditions_one.insert(remaining_matches, best_draw);
+        }
+        // Collect best_draw options for Player TWO
+        if let Some((best_draw, _weight)) = weights_two
+            .iter()
+            .filter(|(condition, _weight)| condition.remaining == remaining_matches)
+            .map(|(condition, weight)| ((condition.drawn, weight)))
+            .max_by(|(_draw_a, weight_a), (_draw_b, weight_b)| weight_a.cmp(weight_b))
+        {
+            best_conditions_two.insert(remaining_matches, best_draw);
+        }
+    }
+
+    println!("Best-conditions-one:");
+    println!("{:#?}", best_conditions_one);
     println!();
-    println!("Weights-TWO");
-    println!("{weights_two:#?}");
-
-    let best_draw_when_5_remain_one: Vec<_> = weights_one
-        .iter()
-        .filter(|(condition, weight)| condition.remaining == 10)
-        .collect();
-
-    println!("Chances for 5 remaing ONE");
-    println!("{best_draw_when_5_remain_one:#?}");
+    println!("Best-conditions-two:");
+    println!("{:#?}", best_conditions_two);
     println!();
-
-    let best_draw_when_5_remain_two: Vec<_> = weights_two
-        .iter()
-        .filter(|(condition, weight)| condition.remaining == 10)
-        .collect();
-
-    println!("Chances for 5 remaing TWO");
-    println!("{best_draw_when_5_remain_two:#?}");
 }
 
 fn swap_player(player: Player) -> Player {
