@@ -1,7 +1,7 @@
 package de.holisticon.vorsprechen.niilz.nimgame.service;
 
 import de.holisticon.vorsprechen.niilz.nimgame.common.Constants.Error;
-import de.holisticon.vorsprechen.niilz.nimgame.common.SmartChoiceMap;
+import de.holisticon.vorsprechen.niilz.nimgame.common.MoveUtils;
 import de.holisticon.vorsprechen.niilz.nimgame.viewmodel.GameStateMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessage;
 import de.holisticon.vorsprechen.niilz.nimgame.model.MoveMessageComputer;
@@ -92,7 +92,7 @@ public class GameService {
      */
     public int decideMatchCountForComputer() {
         if (gameState.isPlaySmart()) {
-            return SmartChoiceMap.getSmarchChoiceForRemaining(getRemainingMatches());
+            return MoveUtils.makeSmartChoice(getRemainingMatches(), MAX_MATCH_COUNT_TO_DRAW);
         } else {
             var maxMatchesToDraw = Math.min(MAX_MATCH_COUNT_TO_DRAW, gameState.getRemainingMatches());
             var matchCount = random.nextInt(maxMatchesToDraw) + RANDOM_OFFSET;
