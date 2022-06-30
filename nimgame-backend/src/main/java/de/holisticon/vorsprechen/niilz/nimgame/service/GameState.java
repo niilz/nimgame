@@ -73,7 +73,7 @@ public class GameState {
     }
 
     /**
-     * @param drawnMatches The ammount of matches that have been drawn in that move
+     * @param drawnMatches The amount of matches that have been drawn in that move
      * @param rank Whether player ONE or TWO is making the move
      */
     public void makeMove(int drawnMatches, Player.PlayerRank rank) {
@@ -95,7 +95,7 @@ public class GameState {
             state = State.WON;
             log.info(Constants.Message.GAME_FINISHED);
         }
-        // Even swap players after game is won, bacause the one that pics the last match Looses
+        // Even swap players after game is won, because the one that pics the last match Looses
         // Meaning the next player, who's turn it would be, wins
         swapPlayers();
     }
